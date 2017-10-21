@@ -44,10 +44,18 @@ std::string generateModule(std::string result, std::string oper1, std::string op
 	std::string out;
 	int i = 0;
 	bool real1 = false;
+	bool sign1 = false;
 	bool real2 = false;
+	bool sign2 = false;
 	for (i = 0; i < ioList.size() - 1; i++) {
-		if (ioList.at(i).getName == oper1) real1 = true;
-		if (ioList.at(i).getName == oper2) real2 = true;
+		if (ioList.at(i).getName() == oper1) {
+			real1 = true;
+			sign1 = ioList.at(i).getSIGN();
+		}
+		if (ioList.at(i).getName() == oper2) {
+			real2 = true;
+			sign2 = ioList.at(i).getSIGN();
+		}
 	}
 	if (!real1 || !real2) return; //error case 1-3
 	if (type == "+") {
@@ -88,19 +96,29 @@ std::string generateModule(std::string result, std::string oper1, std::string op
 	else {
 		return; //error case 4
 	}
-	return out;
+	if (sign1 || sign2) return "S" + out;
+	else return out;
 }
 
 std::string generateMux(std::string result, std::string oper1, std::string oper2, std::string oper3, int num, std::vector<node>ioList) {
 	int i = 0;
 	bool real1 = false;
+	bool sign1 = false;
 	bool real2 = false;
+	bool sign2 = false;
 	for (i = 0; i < ioList.size() - 1; i++) {
-		if (ioList.at(i).getName == oper1) real1 = true;
-		if (ioList.at(i).getName == oper2) real2 = true;
+		if (ioList.at(i).getName() == oper1) {
+			real1 = true;
+			sign1 = ioList.at(i).getSIGN();
+		}
+		if (ioList.at(i).getName() == oper2) {
+			real2 = true;
+			sign2 = ioList.at(i).getSIGN();
+		}
 	}
 	if (!real1 || !real2) return; //error case 1-3
-	return "MUX2x1 mux" + std::to_string(num) + "(" + oper1 + "," + oper2 + "," + oper3 + "," + result + ");";
+	if (sign1 || sign2) return "SMUX2x1 mux" + std::to_string(num) + "(" + oper1 + "," + oper2 + "," + oper3 + "," + result + ");";
+	else return "MUX2x1 mux" + std::to_string(num) + "(" + oper1 + "," + oper2 + "," + oper3 + "," + result + ");";
 }
 
 void generateVerilogFile(std::vector<node> ioList, std::vector<node> moduleList, char* inFileStr, char* outFileStr) {
