@@ -3,6 +3,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <iterator>
 
 #include "node.h"
 
@@ -61,7 +62,7 @@ int main (int argc, char* argv[]){
 					temp[j] = NULL;
 					j++;
 				}
-				size = stoi(temp);
+				std::istringstream (temp) >> size;
 				for(i = 2; i < results.size(); i++){ //create a node for each variable with these stats
 					temp = results[i]; //get rid of commas
 					if(temp[1] == ','){
