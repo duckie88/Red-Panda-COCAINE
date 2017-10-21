@@ -37,7 +37,11 @@ void generateIO(std::vector<node> list, char* outFileStr) {
 	myFile.close();
 }
 
-void generateModule() {
+void generateModule(std::string result, std::string oper1, std::string oper2, std::string type) {
+
+}
+
+void generateMux(std::string result, std::string oper1, std::string oper2, std::string oper3) {
 
 }
 

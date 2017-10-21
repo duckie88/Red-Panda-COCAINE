@@ -75,7 +75,13 @@ int main (int argc, char* argv[]){
 				}
 			}
 			else if (results[1] == "=") {
-				if (results[3] == "?") { //how do we handle the module names?
+				if (results[3] == "") { //how do we handle the module names?
+					result = results[0];
+					oper1 = results[2];
+					type = "reg";
+					//list2.add(functionCall(result, oper1, "", "reg"));
+				}
+				else if (results[3] == "?") { //how do we handle the module names?
 					result = results[0];
 					oper1 = results[2];
 					oper2 = results[4];
