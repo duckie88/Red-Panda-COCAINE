@@ -68,6 +68,9 @@ int main (int argc, char* argv[]){
 					list.push_back(node(results[0],results[i],SIGN,size));
 				}
 			}
+			else if (results[1] == "=") {
+				//stuff
+			}
 		}
 	}
 	
