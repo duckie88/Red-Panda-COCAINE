@@ -9,31 +9,34 @@ void generateIO(std::vector<node> list, char* outFileStr) {
 	myFile.open(outFileStr, std::ios::app);
 
 	// Looping through
-	for (int i = 1; i < list.size(); i++) {
+	for (int i = 0; i < list.size(); i++) {
 	//list[i].getName() << list[i].getType() << list[i].getSIGN() << list[i].getDataSize() 
 		if (list.at(i).getType().compare("wire") == 0) {
 			ss = std::stringstream();	// Clear string stream
 			ss << "wire [" << list.at(i).getDataSize() - 1 << ":0] " << list.at(i).getName() << ';' << std::endl;
 			ioTemp = ss.str();
+			std::cout << ioTemp;
 			myFile << ioTemp;
 		}
 		else if (list.at(i).getType().compare("input") == 0) {
 			ss = std::stringstream();	// Clear string stream
 			ss << "input [" << list.at(i).getDataSize() - 1 << ":0] " << list.at(i).getName() << ';' << std::endl;
 			ioTemp = ss.str();
+			std::cout << ioTemp;
 			myFile << ioTemp;
 		}
 		else if (list.at(i).getType().compare("output") == 0) {
 			ss = std::stringstream();	// Clear string stream
 			ss << "output [" << list.at(i).getDataSize() - 1 << ":0] " << list.at(i).getName() << ';' << std::endl;
 			ioTemp = ss.str();
+			std::cout << ioTemp;
 			myFile << ioTemp;
 		}
 		else {
 			std::cout << "Not an input, output, or wire" << std::endl;
 		}
 	}
-	myFile << '\n\n';
+	myFile << std::endl << std::endl;
 	myFile.close();
 }
 

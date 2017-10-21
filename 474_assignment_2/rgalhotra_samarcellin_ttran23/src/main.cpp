@@ -68,8 +68,11 @@ int main (int argc, char* argv[]){
 					temp = results[i]; //get rid of commas
 					if(temp[1] == ','){
 						temp[1] = NULL;
+						results[i] = temp[0];
 					}
-					results[i] = temp;
+					else {
+						results[i] = temp;
+					}
 					list.push_back(node(results[0],results[i],SIGN,size));
 				}
 			}
