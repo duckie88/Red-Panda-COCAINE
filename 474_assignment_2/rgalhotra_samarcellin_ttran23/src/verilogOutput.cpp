@@ -57,7 +57,9 @@ void generateVerilogFile(std::vector<node> ioList, std::vector<node> moduleList,
 	// Start of module
 	outFS << "module " << moduleName << "( ";
 	for (int i = 0; i < ioList.size() - 1; i++) {
-		outFS << ioList.at(i).getName() << ", ";
+		if (ioList.at(i).getType().compare("input") == 0 || ioList.at(i).getType().compare("output") == 0) {
+			outFS << ioList.at(i).getName() << ", ";
+		}
 	}
 	outFS << ioList.at(ioList.size()-1).getName() << " );\n";
 	outFS.close();
