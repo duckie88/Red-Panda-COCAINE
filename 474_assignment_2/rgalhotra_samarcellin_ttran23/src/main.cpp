@@ -14,6 +14,12 @@ int main (int argc, char* argv[]){
 	std::string line;
 	std::string temp;
 	std::vector<node> list;
+	std::vector<node> list2;
+	std::string result;
+	std::string oper1;
+	std::string oper2;
+	std::string oper3;
+	std::string type;
 	int i, j, size;
 	char name;
 	bool SIGN;
@@ -69,7 +75,21 @@ int main (int argc, char* argv[]){
 				}
 			}
 			else if (results[1] == "=") {
-				//stuff
+				if (results[3] == "?") { //how do we handle the module names?
+					result = results[0];
+					oper1 = results[2];
+					oper2 = results[4];
+					oper3 = results[6];
+					type = results[3];
+					//list2.add(muxCall(result, oper1, oper2, oper3));
+				}
+				else {
+					result = results[0];
+					oper1 = results[2];
+					oper2 = results[4];
+					type = results[3];
+					//list2.add(functionCall(result, oper1, oper2, type));
+				}
 			}
 		}
 	}
@@ -80,7 +100,6 @@ int main (int argc, char* argv[]){
 		std::cout << list[i].getName() << '\t' << list[i].getType() << '\t' << list[i].getSIGN() << '\t' << list[i].getDataSize() << std::endl;
 	}
 	std::cout << "\n\n\n";
-	std::vector<node> list2;	//for when we do the operations
 	generateVerilogFile(list, list2, argv[1], argv[2]);
 
 	return 0;
