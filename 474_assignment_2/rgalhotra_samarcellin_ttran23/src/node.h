@@ -6,9 +6,9 @@
 class node{
 public:
 	node(); //default constructor
-	node(std::string type, char name, bool SIGN, int dataSize);
+	node(std::string type, std::string name, bool SIGN, int dataSize);
 	void setName(char name);
-	char getName();
+	std::string getName();
 	void setSIGN(bool SIGN);
 	bool getSIGN();
 	void setDataSize(int dataSize);
@@ -17,7 +17,7 @@ public:
 	std::string getType();
 private:
 	std::string type;
-	char name;
+	std::string name;
 	bool SIGN;
 	int dataSize;
 };

@@ -4,7 +4,7 @@ node::node(){
 	return;
 }
 	
-node::node(std::string type, char name, bool SIGN, int dataSize){
+node::node(std::string type, std::string name, bool SIGN, int dataSize){
 	this->type = type;
 	this->name = name;
 	this->SIGN = SIGN;
@@ -26,7 +26,7 @@ void node::setName(char name){
 	return;
 }
 
-char node::getName(){
+std::string node::getName(){
 	return this->name;
 }
 
