@@ -47,20 +47,28 @@ std::string generateModule(std::string result, std::string oper1, std::string op
 	bool sign1 = false;
 	bool real2 = false;
 	bool sign2 = false;
+	bool real3 = false;
+	bool sign3 = false;
 	int datawidth = 0;
+	int indata = 0;
 	for (i = 0; i < ioList.size() - 1; i++) {
 		if (ioList.at(i).getName() == oper1) {
 			real1 = true;
 			sign1 = ioList.at(i).getSIGN();
-			if (ioList.at(i).getDataSize() > datawidth) datawidth = ioList.at(i).getDataSize();
+			if (ioList.at(i).getDataSize() > indata) indata = ioList.at(i).getDataSize();
 		}
 		if (ioList.at(i).getName() == oper2) {
 			real2 = true;
 			sign2 = ioList.at(i).getSIGN();
+			if (ioList.at(i).getDataSize() > indata) indata = ioList.at(i).getDataSize();
+		}
+		if (ioList.at(i).getName() == result) {
+			real3 = true;
+			sign3 = ioList.at(i).getSIGN();
 			if (ioList.at(i).getDataSize() > datawidth) datawidth = ioList.at(i).getDataSize();
 		}
 	}
-	if (!real1 || !real2) return "error"; //error case 1-3
+	if (!real1 || !real2 || !real3) return "error"; //error case 1-3
 	if (type == "+") {
 		if(oper2 == "1") out = "INC #(.DATAWIDTH(" + std::to_string(datawidth) + ")) incrementor" + std::to_string(num) + "(" + oper1 + "," + result + ");";
 		else out = "ADD #(.DATAWIDTH(" + std::to_string(datawidth) + ")) adder" + std::to_string(num) + "(" + oper1 + "," + oper2 + "," + result + ");";
@@ -76,13 +84,13 @@ std::string generateModule(std::string result, std::string oper1, std::string op
 		out = "MUL #(.DATAWIDTH(" + std::to_string(datawidth) + ")) multiplier" + std::to_string(num) + "(" + oper1 + "," + oper2 + "," + result + ");";
 	}
 	else if (type == "==") {
-		out = "COMP #(.DATAWIDTH(" + std::to_string(datawidth) + ")) comparator" + std::to_string(num) + "(" + oper1 + "," + oper2 + ", , ," + result + ");";
+		out = "COMP #(.DATAWIDTH(" + std::to_string(indata) + ")) comparator" + std::to_string(num) + "(" + oper1 + "," + oper2 + ", , ," + result + ");";
 	}
 	else if (type == ">") {
-		out = "COMP #(.DATAWIDTH(" + std::to_string(datawidth) + ")) comparator" + std::to_string(num) + "(" + oper1 + "," + oper2 + "," + result + ", , );";
+		out = "COMP #(.DATAWIDTH(" + std::to_string(indata) + ")) comparator" + std::to_string(num) + "(" + oper1 + "," + oper2 + "," + result + ", , );";
 	}
 	else if (type == "<") {
-		out = "COMP #(.DATAWIDTH(" + std::to_string(datawidth) + ")) comparator" + std::to_string(num) + "(" + oper1 + "," + oper2 + ", ," + result + ", );";
+		out = "COMP #(.DATAWIDTH(" + std::to_string(indata) + ")) comparator" + std::to_string(num) + "(" + oper1 + "," + oper2 + ", ," + result + ", );";
 	}
 	else if (type == "<<") {
 		out = "SHL #(.DATAWIDTH(" + std::to_string(datawidth) + ")) shiftleft" + std::to_string(num) + "(" + oper2 + "," + oper1 + "," + result + ");";
@@ -109,20 +117,25 @@ std::string generateMux(std::string result, std::string oper1, std::string oper2
 	bool sign1 = false;
 	bool real2 = false;
 	bool sign2 = false;
+	bool sign3 = false;
+	bool real3 = false;
 	int datawidth = 0;
 	for (i = 0; i < ioList.size() - 1; i++) {
 		if (ioList.at(i).getName() == oper1) {
 			real1 = true;
 			sign1 = ioList.at(i).getSIGN();
-			if (ioList.at(i).getDataSize() > datawidth) datawidth = ioList.at(i).getDataSize();
 		}
 		if (ioList.at(i).getName() == oper2) {
 			real2 = true;
 			sign2 = ioList.at(i).getSIGN();
+		}
+		if (ioList.at(i).getName() == result) {
+			real3 = true;
+			sign3 = ioList.at(i).getSIGN();
 			if (ioList.at(i).getDataSize() > datawidth) datawidth = ioList.at(i).getDataSize();
 		}
 	}
-	if (!real1 || !real2) return "error"; //error case 1-3
+	if (!real1 || !real2 || !real3) return "error"; //error case 1-3
 	if (sign1 || sign2) return "SMUX2x1 mux" + std::to_string(num) + "(" + oper1 + "," + oper2 + "," + oper3 + "," + result + ");";
 	else return "MUX2x1 #(.DATAWIDTH(" + std::to_string(datawidth) + ")) mux" + std::to_string(num) + "(" + oper1 + "," + oper2 + "," + oper3 + "," + result + ");";
 }
