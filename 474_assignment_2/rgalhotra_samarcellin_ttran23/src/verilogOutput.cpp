@@ -57,7 +57,7 @@ std::string generateModule(std::string result, std::string oper1, std::string op
 			sign2 = ioList.at(i).getSIGN();
 		}
 	}
-	if (!real1 || !real2) return; //error case 1-3
+	if (!real1 || !real2) return "error"; //error case 1-3
 	if (type == "+") {
 		if(oper2 == "1") out = "INC incrementor" + std::to_string(num) + "(" + oper1 + "," + result + ");";
 		else out = "ADD adder" + std::to_string(num) + "(" + oper1 + "," + oper2 + "," + result + ");";
@@ -94,7 +94,7 @@ std::string generateModule(std::string result, std::string oper1, std::string op
 		out = "MOD modulus" + std::to_string(num) + "(" + oper1 + "," + oper2 + "," + result + ");";
 	}
 	else {
-		return; //error case 4
+		return "error"; //error case 4
 	}
 	if (sign1 || sign2) return "S" + out;
 	else return out;
@@ -116,7 +116,7 @@ std::string generateMux(std::string result, std::string oper1, std::string oper2
 			sign2 = ioList.at(i).getSIGN();
 		}
 	}
-	if (!real1 || !real2) return; //error case 1-3
+	if (!real1 || !real2) return "error"; //error case 1-3
 	if (sign1 || sign2) return "SMUX2x1 mux" + std::to_string(num) + "(" + oper1 + "," + oper2 + "," + oper3 + "," + result + ");";
 	else return "MUX2x1 mux" + std::to_string(num) + "(" + oper1 + "," + oper2 + "," + oper3 + "," + result + ");";
 }
@@ -146,6 +146,9 @@ void generateVerilogFile(std::vector<node> ioList, std::vector<std::string> modu
 	generateIO(ioList, outFileStr);
 
 	outFS.open(outFileStr, std::ios::app);
+	for (int i = 0; i < moduleList.size() - 1; i++) {
+		outFS << moduleList.at(i) << std::endl;
+	}
 	outFS << "endmodule" << std::endl;
 	outFS.close();
 }
