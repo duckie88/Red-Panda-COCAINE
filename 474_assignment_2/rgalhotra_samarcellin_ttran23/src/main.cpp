@@ -20,7 +20,7 @@ int main (int argc, char* argv[]){
 	std::string oper2;
 	std::string oper3;
 	std::string type;
-	int i, j, size;
+	int i, j, size, num = 0;
 	char name;
 	bool SIGN;
 
@@ -87,14 +87,16 @@ int main (int argc, char* argv[]){
 					oper2 = results[4];
 					oper3 = results[6];
 					type = results[3];
-					//list2.add(generateMux(result, oper1, oper2, oper3));
+					//list2.add(generateMux(result, oper1, oper2, oper3, num));
+					num++;
 				}
 				else {
 					result = results[0];
 					oper1 = results[2];
 					oper2 = results[4];
 					type = results[3];
-					//list2.add(generateModule(result, oper1, oper2, type));
+					//list2.add(generateModule(result, oper1, oper2, type, num));
+					num++;
 				}
 			}
 		}

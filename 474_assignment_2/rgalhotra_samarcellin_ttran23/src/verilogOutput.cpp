@@ -37,14 +37,70 @@ void generateIO(std::vector<node> list, char* outFileStr) {
 	myFile.close();
 }
 
-std::string generateModule(std::string result, std::string oper1, std::string oper2, std::string type) {
+std::string generateModule(std::string result, std::string oper1, std::string oper2, std::string type, int num, std::vector<node>ioList) {
 	//switch statement based off of type
 	//if - or + check if oper2 is 1, then use inc or dec
 	//default case to check for error where it's not a real operator
+	std::string out;
+	int i = 0;
+	bool real1 = false;
+	bool real2 = false;
+	for (i = 0; i < ioList.size() - 1; i++) {
+		if (ioList.at(i).getName == oper1) real1 = true;
+		if (ioList.at(i).getName == oper2) real2 = true;
+	}
+	if (!real1 || !real2) return; //error case 1-3
+	if (type == "+") {
+		if(oper2 == "1") out = "INC incrementor" + std::to_string(num) + "(" + oper1 + "," + result + ");";
+		else out = "ADD adder" + std::to_string(num) + "(" + oper1 + "," + oper2 + "," + result + ");";
+	}
+	else if (type == "-") {
+		if (oper2 == "1") out = "DEC decrementor" + std::to_string(num) + "(" + oper1 + "," + result + ");";
+		else out = "SUB subber" + std::to_string(num) + "(" + oper1 + "," + oper2 + "," + result + ");";
+	}
+	else if (type == "reg") {
+		out = "REG register" + std::to_string(num) + "(Clk, Rst" + "," + oper1 + "," + result + ");";
+	}
+	else if (type == "mul") {
+		out = "MUL multiplier" + std::to_string(num) + "(" + oper1 + "," + oper2 + "," + result + ");";
+	}
+	else if (type == "==") {
+		out = "COMP comparator" + std::to_string(num) + "(" + oper1 + "," + oper2 + ", , ," + result + ");";
+	}
+	else if (type == ">") {
+		out = "COMP comparator" + std::to_string(num) + "(" + oper1 + "," + oper2 + "," + result + ", , );";
+	}
+	else if (type == "<") {
+		out = "COMP comparator" + std::to_string(num) + "(" + oper1 + "," + oper2 + ", ," + result + ", );";
+	}
+	else if (type == "<<") {
+		out = "SHL shiftleft" + std::to_string(num) + "(" + oper2 + "," + oper1 + "," + result + ");";
+	}
+	else if (type == ">>") {
+		out = "SHR shiftright" + std::to_string(num) + "(" + oper2 + "," + oper1 + "," + result + ");";
+	}
+	else if (type == "/") {
+		out = "DIV divider" + std::to_string(num) + "(" + oper1 + "," + oper2 + "," + result + ");";
+	}
+	else if (type == "%") {
+		out = "MOD modulus" + std::to_string(num) + "(" + oper1 + "," + oper2 + "," + result + ");";
+	}
+	else {
+		return; //error case 4
+	}
+	return out;
 }
 
-std::string generateMux(std::string result, std::string oper1, std::string oper2, std::string oper3) {
-	//separate function call for when it's a mux statement
+std::string generateMux(std::string result, std::string oper1, std::string oper2, std::string oper3, int num, std::vector<node>ioList) {
+	int i = 0;
+	bool real1 = false;
+	bool real2 = false;
+	for (i = 0; i < ioList.size() - 1; i++) {
+		if (ioList.at(i).getName == oper1) real1 = true;
+		if (ioList.at(i).getName == oper2) real2 = true;
+	}
+	if (!real1 || !real2) return; //error case 1-3
+	return "MUX2x1 mux" + std::to_string(num) + "(" + oper1 + "," + oper2 + "," + oper3 + "," + result + ");";
 }
 
 void generateVerilogFile(std::vector<node> ioList, std::vector<node> moduleList, char* inFileStr, char* outFileStr) {
