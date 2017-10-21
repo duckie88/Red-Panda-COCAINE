@@ -5,4 +5,4 @@
 
 (USAGE: dpgen netlistFile verilogFile )
 
-Project reads in netlist files and creates a syntehsizable verilog datapath implementation.
+Project reads in netlist files and creates a synthesizable verilog datapath implementation.

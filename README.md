@@ -1,2 +1,2 @@
 # Red-Panda-COCAINE
-lol
+C O C A I N E
