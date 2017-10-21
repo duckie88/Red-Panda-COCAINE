@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "node.h"
+#include "verilogOutput.h"
 
 int main (int argc, char* argv[]){
 	std::istringstream inSS;
@@ -73,11 +74,14 @@ int main (int argc, char* argv[]){
 			}
 		}
 	}
+	
 
 	//test print of list
 	for(i = 0; i < list.size(); i++){
-		std::cout << list[i].getName() << std::endl;
+		std::cout << list[i].getName() << '\t' << list[i].getType() << '\t' << list[i].getSIGN() << '\t' << list[i].getDataSize() << std::endl;
 	}
-
+	std::cout << "\n\n\n";
+	generateIO(list, argv[2]);
+	
 	return 0;
 }
