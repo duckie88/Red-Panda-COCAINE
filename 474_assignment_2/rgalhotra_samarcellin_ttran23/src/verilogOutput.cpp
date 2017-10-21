@@ -121,7 +121,7 @@ std::string generateMux(std::string result, std::string oper1, std::string oper2
 	else return "MUX2x1 mux" + std::to_string(num) + "(" + oper1 + "," + oper2 + "," + oper3 + "," + result + ");";
 }
 
-void generateVerilogFile(std::vector<node> ioList, std::vector<node> moduleList, char* inFileStr, char* outFileStr) {
+void generateVerilogFile(std::vector<node> ioList, std::vector<std::string> moduleList, char* inFileStr, char* outFileStr) {
 	// https://stackoverflow.com/questions/8520560/get-a-file-name-from-a-path
 	std::string moduleName = inFileStr;
 	moduleName = moduleName.substr(moduleName.find_last_of("/\\") + 1);	

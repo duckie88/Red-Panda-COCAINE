@@ -14,7 +14,7 @@ int main (int argc, char* argv[]){
 	std::string line;
 	std::string temp;
 	std::vector<node> list;
-	std::vector<node> list2;
+	std::vector<std::string> list2;
 	std::string result;
 	std::string oper1;
 	std::string oper2;
@@ -79,7 +79,8 @@ int main (int argc, char* argv[]){
 					result = results[0];
 					oper1 = results[2];
 					type = "reg";
-					//list2.add(generateModule(result, oper1, "", "reg"));
+					list2.push_back(generateModule(result, oper1, "", "reg", num, list));
+					num++;
 				}
 				else if (results[3] == "?") { //how do we handle the module names?
 					result = results[0];
@@ -87,7 +88,7 @@ int main (int argc, char* argv[]){
 					oper2 = results[4];
 					oper3 = results[6];
 					type = results[3];
-					//list2.add(generateMux(result, oper1, oper2, oper3, num));
+					list2.push_back(generateMux(result, oper1, oper2, oper3, num, list));
 					num++;
 				}
 				else {
@@ -95,7 +96,7 @@ int main (int argc, char* argv[]){
 					oper1 = results[2];
 					oper2 = results[4];
 					type = results[3];
-					//list2.add(generateModule(result, oper1, oper2, type, num));
+					list2.push_back(generateModule(result, oper1, oper2, type, num, list));
 					num++;
 				}
 			}
