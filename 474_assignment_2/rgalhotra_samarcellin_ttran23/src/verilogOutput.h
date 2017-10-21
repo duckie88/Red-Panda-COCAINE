@@ -9,7 +9,7 @@
 #include "node.h"
 
 // Call it as: generateVerilogFile(argv[2]);
-void generateVerilogFile(char* outFileStr);
+void generateVerilogFile(std::vector<node> ioList, std::vector<node> moduleList, char* inFileStr, char* outFileStr);
 void generateIO(std::vector<node> list, char* outFileStr);
 void generateModule();
 

@@ -11,7 +11,6 @@
 int main (int argc, char* argv[]){
 	std::istringstream inSS;
 	std::ifstream inFS;
-	std::ofstream outFS;
 	std::string line;
 	std::string temp;
 	std::vector<node> list;
@@ -27,12 +26,6 @@ int main (int argc, char* argv[]){
 	inFS.open(argv[1]);//open input file
 	if(!inFS.is_open()){ //check opened correctly
 		std::cout << "Could not open input file." << std::endl;
-		return -1;
-	}
-
-	outFS.open(argv[2]);//open output file
-	if(!outFS.is_open()){ //check opened correctly
-		std::cout << "Could not open output file." << std::endl;
 		return -1;
 	}
 
@@ -66,9 +59,8 @@ int main (int argc, char* argv[]){
 				std::istringstream (temp) >> size;
 				for(i = 2; i < results.size(); i++){ //create a node for each variable with these stats
 					temp = results[i]; //get rid of commas
-					if(temp[1] == ','){
-						temp[1] = NULL;
-						results[i] = temp[0];
+					if(temp[1] == ','){			// Setting to NULL messes up the output to file, but since it looked like you were just setting temp[1]
+						results[i] = temp[0];	// to NULL, it would mean the message would just end before that, so temp[0] is effectively the same.
 					}
 					else {
 						results[i] = temp;
@@ -85,7 +77,8 @@ int main (int argc, char* argv[]){
 		std::cout << list[i].getName() << '\t' << list[i].getType() << '\t' << list[i].getSIGN() << '\t' << list[i].getDataSize() << std::endl;
 	}
 	std::cout << "\n\n\n";
-	generateIO(list, argv[2]);
-	
+	std::vector<node> list2;	//for when we do the operations
+	generateVerilogFile(list, list2, argv[1], argv[2]);
+
 	return 0;
 }

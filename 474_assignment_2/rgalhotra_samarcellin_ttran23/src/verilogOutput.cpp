@@ -15,21 +15,18 @@ void generateIO(std::vector<node> list, char* outFileStr) {
 			ss = std::stringstream();	// Clear string stream
 			ss << "wire [" << list.at(i).getDataSize() - 1 << ":0] " << list.at(i).getName() << ';' << std::endl;
 			ioTemp = ss.str();
-			std::cout << ioTemp;
 			myFile << ioTemp;
 		}
 		else if (list.at(i).getType().compare("input") == 0) {
 			ss = std::stringstream();	// Clear string stream
 			ss << "input [" << list.at(i).getDataSize() - 1 << ":0] " << list.at(i).getName() << ';' << std::endl;
 			ioTemp = ss.str();
-			std::cout << ioTemp;
 			myFile << ioTemp;
 		}
 		else if (list.at(i).getType().compare("output") == 0) {
 			ss = std::stringstream();	// Clear string stream
 			ss << "output [" << list.at(i).getDataSize() - 1 << ":0] " << list.at(i).getName() << ';' << std::endl;
 			ioTemp = ss.str();
-			std::cout << ioTemp;
 			myFile << ioTemp;
 		}
 		else {
@@ -44,6 +41,29 @@ void generateModule() {
 
 }
 
-void generateVerilogFile(char* outFileStr) {
+void generateVerilogFile(std::vector<node> ioList, std::vector<node> moduleList, char* inFileStr, char* outFileStr) {
+	// https://stackoverflow.com/questions/8520560/get-a-file-name-from-a-path
+	std::string moduleName = inFileStr;
+	moduleName = moduleName.substr(moduleName.find_last_of("/\\") + 1);	
+	moduleName = moduleName.substr(0, moduleName.find_last_of("."));
 
+	std::ofstream outFS;
+	outFS.open(outFileStr);//open output file
+	if (!outFS.is_open()){ //check opened correctly
+		std::cout << "Could not open output file." << std::endl;
+		exit(EXIT_FAILURE);
+	}
+
+	// Start of module
+	outFS << "module " << moduleName << "( ";
+	for (int i = 0; i < ioList.size() - 1; i++) {
+		outFS << ioList.at(i).getName() << ", ";
+	}
+	outFS << ioList.at(ioList.size()-1).getName() << " );\n";
+	outFS.close();
+	generateIO(ioList, outFileStr);
+
+	outFS.open(outFileStr, std::ios::app);
+	outFS << "endmodule" << std::endl;
+	outFS.close();
 }
