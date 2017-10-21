@@ -38,11 +38,13 @@ void generateIO(std::vector<node> list, char* outFileStr) {
 }
 
 void generateModule(std::string result, std::string oper1, std::string oper2, std::string type) {
-
+	//switch statement based off of type
+	//if - or + check if oper2 is 1, then use inc or dec
+	//default case to check for error where it's not a real operator
 }
 
 void generateMux(std::string result, std::string oper1, std::string oper2, std::string oper3) {
-
+	//separate function call for when it's a mux statement
 }
 
 void generateVerilogFile(std::vector<node> ioList, std::vector<node> moduleList, char* inFileStr, char* outFileStr) {
