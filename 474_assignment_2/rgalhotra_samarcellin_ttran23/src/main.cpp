@@ -79,7 +79,7 @@ int main (int argc, char* argv[]){
 					result = results[0];
 					oper1 = results[2];
 					type = "reg";
-					//list2.add(functionCall(result, oper1, "", "reg"));
+					//list2.add(generateModule(result, oper1, "", "reg"));
 				}
 				else if (results[3] == "?") { //how do we handle the module names?
 					result = results[0];
@@ -87,14 +87,14 @@ int main (int argc, char* argv[]){
 					oper2 = results[4];
 					oper3 = results[6];
 					type = results[3];
-					//list2.add(muxCall(result, oper1, oper2, oper3));
+					//list2.add(generateMux(result, oper1, oper2, oper3));
 				}
 				else {
 					result = results[0];
 					oper1 = results[2];
 					oper2 = results[4];
 					type = results[3];
-					//list2.add(functionCall(result, oper1, oper2, type));
+					//list2.add(generateModule(result, oper1, oper2, type));
 				}
 			}
 		}
