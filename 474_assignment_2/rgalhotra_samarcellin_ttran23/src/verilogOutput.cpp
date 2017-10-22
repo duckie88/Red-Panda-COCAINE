@@ -80,7 +80,7 @@ std::string generateModule(std::string result, std::string oper1, std::string op
 	else if (type == "reg") {
 		out = "REG #(.DATAWIDTH(" + std::to_string(datawidth) + ")) register" + std::to_string(num) + "(Clk, Rst" + "," + oper1 + "," + result + ");";
 	}
-	else if (type == "mul") {
+	else if (type == "*") {
 		out = "MUL #(.DATAWIDTH(" + std::to_string(datawidth) + ")) multiplier" + std::to_string(num) + "(" + oper1 + "," + oper2 + "," + result + ");";
 	}
 	else if (type == "==") {

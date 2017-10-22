@@ -75,7 +75,7 @@ int main (int argc, char* argv[]){
 				}
 			}
 			else if (results[1] == "=") {
-				if (results[3] == "") { //how do we handle the module names?
+				if (results[3] == "") { //need to find a better way to detect registers
 					result = results[0];
 					oper1 = results[2];
 					type = "reg";
