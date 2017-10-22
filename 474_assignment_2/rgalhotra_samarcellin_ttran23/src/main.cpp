@@ -75,11 +75,13 @@ int main (int argc, char* argv[]){
 				}
 			}
 			else if (results[1] == "=") {
-				if (results[3] == "") { //need to find a better way to detect registers
+				std::cout << results[3] << std::endl; //for debugging
+				if (results[3].empty()) {
+					std::cout << "this actually happens" << std::endl;
 					result = results[0];
 					oper1 = results[2];
 					type = "reg";
-					list2.push_back(generateModule(result, oper1, "", "reg", num, list));
+					list2.push_back(generateModule(result, oper1, "help", "reg", num, list));
 					num++;
 				}
 				else if (results[3] == "?") { //how do we handle the module names?
@@ -96,6 +98,8 @@ int main (int argc, char* argv[]){
 					oper1 = results[2];
 					oper2 = results[4];
 					type = results[3];
+					std::cout << results[3] << "this" << std::endl;
+					std::cout << type << "sucks" << std::endl;
 					list2.push_back(generateModule(result, oper1, oper2, type, num, list));
 					num++;
 				}
