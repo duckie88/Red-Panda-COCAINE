@@ -75,11 +75,9 @@ int main(int argc, char* argv[]) {
 			else if (results[1] == "=") {
 				//std::cout << results[3] << std::endl; //for debugging
 				if (results.size() == 3) {
-					std::cout << "this actually happens" << std::endl;
 					result = results[0];
 					oper1 = results[2];
 					type = "reg";
-					std::cout << type << std::endl;
 					list2.push_back(generateModule(result, oper1, "help", type, num, list));
 					num++;
 					if (!clkrst) {
@@ -102,8 +100,6 @@ int main(int argc, char* argv[]) {
 					oper1 = results[2];
 					oper2 = results[4];
 					type = results[3];
-					std::cout << results[3] << "this" << std::endl;
-					std::cout << type << "sucks" << std::endl;
 					list2.push_back(generateModule(result, oper1, oper2, type, num, list));
 					num++;
 				}

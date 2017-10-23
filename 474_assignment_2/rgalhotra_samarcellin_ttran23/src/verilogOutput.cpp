@@ -73,12 +73,7 @@ std::string generateModule(std::string result, std::string oper1, std::string op
 			if (ioList.at(i).getDataSize() > datawidth) datawidth = ioList.at(i).getDataSize();
 		}
 	}
-
-	std::cout << sign1 << sign2 << std::endl;
-	std::cout << type << "what" << std::endl;
-	std::cout << !real1 << !(real2 || type == "reg") << !real3 << std::endl;
 	if (!(real1 || oper1 == "1") || !(real2 || type == "reg" || oper2 == "1") || !real3) return "error"; //error case 1-3
-	std::cout << type << std::endl;
 	if (type == "+") {
 		if (oper2 == "1") out = "INC #(.DATAWIDTH(" + std::to_string(datawidth) + ")) incrementor" + std::to_string(num) + "(" + oper1 + "," + result + ");";
 		else out = "ADD #(.DATAWIDTH(" + std::to_string(datawidth) + ")) adder" + std::to_string(num) + "(" + oper1 + "," + oper2 + "," + result + ");";
@@ -88,7 +83,6 @@ std::string generateModule(std::string result, std::string oper1, std::string op
 		else out = "SUB #(.DATAWIDTH(" + std::to_string(datawidth) + ")) subber" + std::to_string(num) + "(" + oper1 + "," + oper2 + "," + result + ");";
 	}
 	else if (type == "reg") {
-		std::cout << "we got here" << std::endl;
 		out = "REG #(.DATAWIDTH(" + std::to_string(datawidth) + ")) register" + std::to_string(num) + "(Clk,Rst" + "," + oper1 + "," + result + ");";
 	}
 	else if (type == "*") {
