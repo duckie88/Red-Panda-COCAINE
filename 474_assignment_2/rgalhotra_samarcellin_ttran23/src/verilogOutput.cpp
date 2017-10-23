@@ -11,38 +11,22 @@ void generateIO(std::vector<node> list, char* outFileStr) {
 	// Looping through
 	for (int i = 0; i < list.size(); i++) {
 	//list[i].getName() << list[i].getType() << list[i].getSIGN() << list[i].getDataSize() 
-		if (list.at(i).getType().compare("reg") == 0) {
-			ss = std::stringstream();	// Clear string stream
-			ss << "reg [" << list.at(i).getDataSize() - 1 << ":0] " << list.at(i).getName() << ';' << std::endl;
-			ioTemp = ss.str();
-			std::cout << ioTemp;
-			myFile << ioTemp;
-		}
-		else if (list.at(i).getType().compare("wire") == 0) {
-			ss = std::stringstream();	// Clear string stream
-			ss << "wire [" << list.at(i).getDataSize() - 1 << ":0] " << list.at(i).getName() << ';' << std::endl;
-			ioTemp = ss.str();
-			std::cout << ioTemp;
-			myFile << ioTemp;
-		}
-		else if (list.at(i).getType().compare("input") == 0) {
-			ss = std::stringstream();	// Clear string stream
-			ss << "input [" << list.at(i).getDataSize() - 1 << ":0] " << list.at(i).getName() << ';' << std::endl;
-			ioTemp = ss.str();
-			std::cout << ioTemp;
-			myFile << ioTemp;
-		}
-		else if (list.at(i).getType().compare("output") == 0) {
-			ss = std::stringstream();	// Clear string stream
-			ss << "output [" << list.at(i).getDataSize() - 1 << ":0] " << list.at(i).getName() << ';' << std::endl;
+		ss = std::stringstream();
+		if (list.at(i).getSIGN() == true) {
+			ss << list.at(i).getType() << " signed [" << list.at(i).getDataSize() - 1 << ":0] " << list.at(i).getName() << ';' << std::endl;
 			ioTemp = ss.str();
 			std::cout << ioTemp;
 			myFile << ioTemp;
 		}
 		else {
-			std::cout << "Not an input, output, or wire" << std::endl;
+			ss << list.at(i).getType() << " [" << list.at(i).getDataSize() - 1 << ":0] " << list.at(i).getName() << ';' << std::endl;
+			ioTemp = ss.str();
+			std::cout << ioTemp;
+			myFile << ioTemp;
 		}
 	}
+
+	// End and close
 	myFile << std::endl << std::endl;
 	myFile.close();
 }
