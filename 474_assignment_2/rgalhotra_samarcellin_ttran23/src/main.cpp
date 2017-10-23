@@ -66,12 +66,10 @@ int main (int argc, char* argv[]){
 				std::istringstream (temp) >> size;
 				for(i = 2; i < results.size(); i++){ //create a node for each variable with these stats
 					temp = results[i]; //get rid of commas
-					if(temp[1] == ','){			// Setting to NULL messes up the output to file, but since it looked like you were just setting temp[1]
-						results[i] = temp[0];	// to NULL, it would mean the message would just end before that, so temp[0] is effectively the same.
+					if(temp[1] == ','){			
+						temp[1] = NULL;
 					}
-					else {
-						results[i] = temp;
-					}
+					results[i] = temp;
 					list.push_back(node(results[0],results[i],SIGN,size));
 				}
 			}
@@ -113,7 +111,6 @@ int main (int argc, char* argv[]){
 			}
 		}
 	}
-	
 
 	//test print of list
 	for(i = 0; i < list.size(); i++){

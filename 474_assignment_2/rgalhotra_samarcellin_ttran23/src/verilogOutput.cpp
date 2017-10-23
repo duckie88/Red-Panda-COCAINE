@@ -11,22 +11,32 @@ void generateIO(std::vector<node> list, char* outFileStr) {
 	// Looping through
 	for (int i = 0; i < list.size(); i++) {
 	//list[i].getName() << list[i].getType() << list[i].getSIGN() << list[i].getDataSize() 
-		if (list.at(i).getType().compare("wire") == 0) {
+		if (list.at(i).getType().compare("reg") == 0) {
+			ss = std::stringstream();	// Clear string stream
+			ss << "reg [" << list.at(i).getDataSize() - 1 << ":0] " << list.at(i).getName() << ';' << std::endl;
+			ioTemp = ss.str();
+			std::cout << ioTemp;
+			myFile << ioTemp;
+		}
+		else if (list.at(i).getType().compare("wire") == 0) {
 			ss = std::stringstream();	// Clear string stream
 			ss << "wire [" << list.at(i).getDataSize() - 1 << ":0] " << list.at(i).getName() << ';' << std::endl;
 			ioTemp = ss.str();
+			std::cout << ioTemp;
 			myFile << ioTemp;
 		}
 		else if (list.at(i).getType().compare("input") == 0) {
 			ss = std::stringstream();	// Clear string stream
 			ss << "input [" << list.at(i).getDataSize() - 1 << ":0] " << list.at(i).getName() << ';' << std::endl;
 			ioTemp = ss.str();
+			std::cout << ioTemp;
 			myFile << ioTemp;
 		}
 		else if (list.at(i).getType().compare("output") == 0) {
 			ss = std::stringstream();	// Clear string stream
 			ss << "output [" << list.at(i).getDataSize() - 1 << ":0] " << list.at(i).getName() << ';' << std::endl;
 			ioTemp = ss.str();
+			std::cout << ioTemp;
 			myFile << ioTemp;
 		}
 		else {
@@ -146,33 +156,55 @@ std::string generateMux(std::string result, std::string oper1, std::string oper2
 }
 
 void generateVerilogFile(std::vector<node> ioList, std::vector<std::string> moduleList, char* inFileStr, char* outFileStr) {
+	
+	std::ofstream outFS; // Open file to append/write to it.
+	std::string moduleName = inFileStr; // Getting the module name
+	std::vector<node> ioHeaderList;	// For having a smaller list of input/output for just the header module(___); part. Needed because main ioList will also include wire/regs
+	
 	// https://stackoverflow.com/questions/8520560/get-a-file-name-from-a-path
-	std::string moduleName = inFileStr;
-	moduleName = moduleName.substr(moduleName.find_last_of("/\\") + 1);	
-	moduleName = moduleName.substr(0, moduleName.find_last_of("."));
+	moduleName = moduleName.substr(moduleName.find_last_of("/\\_") + 1); // finds last occurance of a /, \, or _ (for trimming path)
+	moduleName = moduleName.substr(0, moduleName.find_last_of(".")); // takes substring up to last occurance of . (for trimming extensions)
 
-	std::ofstream outFS;
 	outFS.open(outFileStr);//open output file
 	if (!outFS.is_open()){ //check opened correctly
 		std::cout << "Could not open output file." << std::endl;
 		exit(EXIT_FAILURE);
 	}
 
-	// Start of module
+	// Header
 	outFS << "module " << moduleName << "( ";
-	for (int i = 0; i < ioList.size() - 1; i++) {
+	//std::cout << "module " << moduleName << "( ";
+
+	// Putting all input/output variables into a secondary vector
+	for (int i = 0; i < ioList.size(); i++) {
 		if (ioList.at(i).getType().compare("input") == 0 || ioList.at(i).getType().compare("output") == 0) {
-			outFS << ioList.at(i).getName() << ", ";
+			ioHeaderList.push_back(ioList.at(i));
 		}
 	}
-	outFS << ioList.at(ioList.size()-1).getName() << " );\n";
+
+	// Traverses secondary vector and just puts the names
+	for (int i = 0; i < ioHeaderList.size()-1; i++) {
+		outFS << ioHeaderList.at(i).getName() << ", ";
+		//std::cout << ioHeaderList.at(i).getName() << ", ";
+	}
+
+	// Does the last variable because all other variables end with ',' while last one ends with ');'
+	outFS << ioHeaderList.at(ioHeaderList.size() - 1).getName() << " );\n";
+	//std::cout << ioHeaderList.at(ioHeaderList.size() - 1).getName() << " );\n";
 	outFS.close();
+
+	// Generates the list of Input and Outputs
 	generateIO(ioList, outFileStr);
 
+	// Generates the list of operations
 	outFS.open(outFileStr, std::ios::app);
 	for (int i = 0; i < moduleList.size(); i++) {
 		outFS << moduleList.at(i) << std::endl;
+		//std::cout << moduleList.at(i) << std::endl;
 	}
+
+	// Footer
 	outFS << "endmodule" << std::endl;
+	//std::cout << "endmodule" << std::endl;
 	outFS.close();
 }
