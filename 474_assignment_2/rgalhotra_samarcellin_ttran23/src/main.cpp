@@ -81,7 +81,8 @@ int main (int argc, char* argv[]){
 					result = results[0];
 					oper1 = results[2];
 					type = "reg";
-					list2.push_back(generateModule(result, oper1, "help", "reg", num, list));
+					std::cout << type << std::endl;
+					list2.push_back(generateModule(result, oper1, "help", type, num, list));
 					num++;
 				}
 				else if (results[3] == "?") { //how do we handle the module names?
