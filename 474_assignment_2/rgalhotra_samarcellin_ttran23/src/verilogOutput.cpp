@@ -61,7 +61,7 @@ std::string generateModule(std::string result, std::string oper1, std::string op
 	bool sign3 = false;
 	int datawidth = 0;
 	int indata = 0;
-	for (i = 0; i < ioList.size(); i++) {
+	for (i = 0; i < ioList.size() - 1; i++) {
 		if (ioList.at(i).getName() == oper1) {
 			real1 = true;
 			sign1 = ioList.at(i).getSIGN();
@@ -79,12 +79,12 @@ std::string generateModule(std::string result, std::string oper1, std::string op
 		}
 	}
 	std::cout << sign1 << sign2 << std::endl;
-	std::cout << type << "what"<< std::endl;
+	std::cout << type << "what" << std::endl;
 	std::cout << !real1 << !(real2 || type == "reg") << !real3 << std::endl;
 	if (!real1 || !(real2 || type == "reg") || !real3) return "error"; //error case 1-3
 	std::cout << type << std::endl;
 	if (type == "+") {
-		if(oper2 == "1") out = "INC #(.DATAWIDTH(" + std::to_string(datawidth) + ")) incrementor" + std::to_string(num) + "(" + oper1 + "," + result + ");";
+		if (oper2 == "1") out = "INC #(.DATAWIDTH(" + std::to_string(datawidth) + ")) incrementor" + std::to_string(num) + "(" + oper1 + "," + result + ");";
 		else out = "ADD #(.DATAWIDTH(" + std::to_string(datawidth) + ")) adder" + std::to_string(num) + "(" + oper1 + "," + oper2 + "," + result + ");";
 	}
 	else if (type == "-") {
@@ -135,7 +135,7 @@ std::string generateMux(std::string result, std::string oper1, std::string oper2
 	bool sign3 = false;
 	bool real3 = false;
 	int datawidth = 0;
-	for (i = 0; i < ioList.size(); i++) {
+	for (i = 0; i < ioList.size() - 1; i++) {
 		if (ioList.at(i).getName() == oper1) {
 			real1 = true;
 			sign1 = ioList.at(i).getSIGN();
@@ -166,7 +166,7 @@ void generateVerilogFile(std::vector<node> ioList, std::vector<std::string> modu
 	moduleName = moduleName.substr(0, moduleName.find_last_of(".")); // takes substring up to last occurance of . (for trimming extensions)
 
 	outFS.open(outFileStr);//open output file
-	if (!outFS.is_open()){ //check opened correctly
+	if (!outFS.is_open()) { //check opened correctly
 		std::cout << "Could not open output file." << std::endl;
 		exit(EXIT_FAILURE);
 	}
