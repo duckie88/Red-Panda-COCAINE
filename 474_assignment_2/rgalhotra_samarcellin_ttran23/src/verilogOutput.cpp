@@ -118,7 +118,7 @@ std::string generateModule(std::string result, std::string oper1, std::string op
 	else {
 		return "error"; //error case 4
 	}
-	if ((sign1 || sign2) && (type != "reg")) return "S" + out;
+	if ((sign1 || sign2) && !(type == "reg" || type == "<<" || type == ">>")) return "S" + out;
 	else return out;
 }
 
