@@ -13,13 +13,23 @@ void generateIO(std::vector<node> list, char* outFileStr) {
 	//list[i].getName() << list[i].getType() << list[i].getSIGN() << list[i].getDataSize() 
 		ss = std::stringstream();
 		if (list.at(i).getSIGN() == true) {
-			ss << list.at(i).getType() << " signed [" << list.at(i).getDataSize() - 1 << ":0] " << list.at(i).getName() << ';' << std::endl;
+			if (list.at(i).getDataSize() == 1) {
+				ss << list.at(i).getType() << " signed " << list.at(i).getName() << ';' << std::endl;
+			}
+			else {
+				ss << list.at(i).getType() << " signed [" << list.at(i).getDataSize() - 1 << ":0] " << list.at(i).getName() << ';' << std::endl;
+			}
 			ioTemp = ss.str();
 			std::cout << ioTemp;
 			myFile << ioTemp;
 		}
 		else {
-			ss << list.at(i).getType() << " [" << list.at(i).getDataSize() - 1 << ":0] " << list.at(i).getName() << ';' << std::endl;
+			if (list.at(i).getDataSize() == 1) {
+				ss << list.at(i).getType() << " " << list.at(i).getName() << ';' << std::endl;
+			}
+			else {
+				ss << list.at(i).getType() << " [" << list.at(i).getDataSize() - 1 << ":0] " << list.at(i).getName() << ';' << std::endl;
+			}
 			ioTemp = ss.str();
 			std::cout << ioTemp;
 			myFile << ioTemp;
@@ -28,6 +38,7 @@ void generateIO(std::vector<node> list, char* outFileStr) {
 
 	// End and close
 	myFile << std::endl << std::endl;
+	std::cout << std::endl << std::endl;
 	myFile.close();
 }
 
@@ -45,7 +56,7 @@ std::string generateModule(std::string result, std::string oper1, std::string op
 	bool sign3 = false;
 	int datawidth = 0;
 	int indata = 0;
-	for (i = 0; i < ioList.size() - 1; i++) {
+	for (i = 0; i < ioList.size(); i++) {
 		if (ioList.at(i).getName() == oper1) {
 			real1 = true;
 			sign1 = ioList.at(i).getSIGN();
@@ -62,6 +73,7 @@ std::string generateModule(std::string result, std::string oper1, std::string op
 			if (ioList.at(i).getDataSize() > datawidth) datawidth = ioList.at(i).getDataSize();
 		}
 	}
+
 	std::cout << sign1 << sign2 << std::endl;
 	std::cout << type << "what" << std::endl;
 	std::cout << !real1 << !(real2 || type == "reg") << !real3 << std::endl;
@@ -157,7 +169,7 @@ void generateVerilogFile(std::vector<node> ioList, std::vector<std::string> modu
 
 	// Header
 	outFS << "module " << moduleName << "( ";
-	//std::cout << "module " << moduleName << "( ";
+	std::cout << "module " << moduleName << "( ";
 
 	// Putting all input/output variables into a secondary vector
 	for (int i = 0; i < ioList.size(); i++) {
@@ -169,12 +181,12 @@ void generateVerilogFile(std::vector<node> ioList, std::vector<std::string> modu
 	// Traverses secondary vector and just puts the names
 	for (int i = 0; i < ioHeaderList.size()-1; i++) {
 		outFS << ioHeaderList.at(i).getName() << ", ";
-		//std::cout << ioHeaderList.at(i).getName() << ", ";
+		std::cout << ioHeaderList.at(i).getName() << ", ";
 	}
 
 	// Does the last variable because all other variables end with ',' while last one ends with ');'
 	outFS << ioHeaderList.at(ioHeaderList.size() - 1).getName() << " );\n";
-	//std::cout << ioHeaderList.at(ioHeaderList.size() - 1).getName() << " );\n";
+	std::cout << ioHeaderList.at(ioHeaderList.size() - 1).getName() << " );\n";
 	outFS.close();
 
 	// Generates the list of Input and Outputs
@@ -184,11 +196,11 @@ void generateVerilogFile(std::vector<node> ioList, std::vector<std::string> modu
 	outFS.open(outFileStr, std::ios::app);
 	for (int i = 0; i < moduleList.size(); i++) {
 		outFS << moduleList.at(i) << std::endl;
-		//std::cout << moduleList.at(i) << std::endl;
+		std::cout << moduleList.at(i) << std::endl;
 	}
 
 	// Footer
 	outFS << "endmodule" << std::endl;
-	//std::cout << "endmodule" << std::endl;
+	std::cout << "endmodule" << std::endl;
 	outFS.close();
 }

@@ -23,7 +23,7 @@ int main(int argc, char* argv[]) {
 	int i, j, size, num = 0;
 	char name;
 	bool SIGN;
-	bool clkrst;
+	bool clkrst = false;
 
 	if (argc != 3) {  //check for correct input
 		std::cout << "\nUSAGE: dpgen netlistFile verilogFile\n\n";
@@ -47,10 +47,10 @@ int main(int argc, char* argv[]) {
 																															   //parse data for node
 				temp = results[1];
 				if (temp[0] == 'U') {
-					SIGN = 0; //unsigned 
+					SIGN = false; //unsigned 
 				}
 				else {
-					SIGN = 1; //signed
+					SIGN = true; //signed
 				}
 				j = 0;
 				for (i = 0; i < temp.size(); ++i) { //get dataSize by removing letters from Int32, etc.
@@ -74,18 +74,18 @@ int main(int argc, char* argv[]) {
 				}
 			}
 			else if (results[1] == "=") {
-				std::cout << results[3] << std::endl; //for debugging
-				if (results[3].empty()) {
+				//std::cout << results[3] << std::endl; //for debugging
+				if (results.size() == 3) {
 					std::cout << "this actually happens" << std::endl;
 					result = results[0];
 					oper1 = results[2];
 					type = "reg";
 					std::cout << type << std::endl;
-					list2.push_back(generateModule(result, oper1, "help", type, num, list));
+					list2.push_back(generateModule(result, oper1, "isReg", type, num, list));
 					num++;
 					if (!clkrst) {
-						list.push_back(node("input", "Clk", true, 1));
-						list.push_back(node("input", "Rst", true, 1));
+						list.push_back(node("input", "Clk", false, 1));
+						list.push_back(node("input", "Rst", false, 1));
 						clkrst = true;
 					}
 				}
