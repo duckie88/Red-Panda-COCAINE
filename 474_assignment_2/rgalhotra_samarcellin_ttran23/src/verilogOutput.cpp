@@ -50,29 +50,55 @@ std::string generateModule(std::string result, std::string oper1, std::string op
 	int i = 0;
 	bool real1 = false;
 	bool sign1 = false;
+	int dataWidth1 = 0;
 	bool real2 = false;
 	bool sign2 = false;
+	int dataWidth2 = 0;
 	bool real3 = false;
+	int dataWidth3 = 0;
 	bool sign3 = false;
 	int datawidth = 0;
 	int indata = 0;
+
 	for (i = 0; i < ioList.size(); i++) {
 		if (ioList.at(i).getName() == oper1) {
 			real1 = true;
 			sign1 = ioList.at(i).getSIGN();
+			dataWidth1 = ioList.at(i).getDataSize();
 			if (ioList.at(i).getDataSize() > indata) indata = ioList.at(i).getDataSize();
 		}
 		if (ioList.at(i).getName() == oper2) {
 			real2 = true;
 			sign2 = ioList.at(i).getSIGN();
+			dataWidth2 = ioList.at(i).getDataSize();
 			if (ioList.at(i).getDataSize() > indata) indata = ioList.at(i).getDataSize();
 		}
 		if (ioList.at(i).getName() == result) {
 			real3 = true;
 			sign3 = ioList.at(i).getSIGN();
+			dataWidth3 = ioList.at(i).getDataSize();
 			if (ioList.at(i).getDataSize() > datawidth) datawidth = ioList.at(i).getDataSize();
 		}
 	}
+
+	// Appending/Unappending(?) bits
+	if (dataWidth3 < dataWidth1) {	// result is lower bits than input 1
+		oper1.append("[" + std::to_string(dataWidth3 - 1) + ":0]");
+	}
+	else if (dataWidth3 > dataWidth1) {	// Apparently, {4{1'b0},4444} is the same as {00004444}, so the idea is to do {dataWidth{1st_bit} , remaining}
+		oper1.insert(0, "{" + std::to_string(dataWidth3 - dataWidth1) + "{" + oper1 + "[" + std::to_string(dataWidth1-1) + "]},");
+		oper1.append("}");
+	}
+	
+	if (dataWidth3 < dataWidth2 && oper2 != "1") {	// result is lower bits than input 1
+		oper2 = oper2.append('[' + std::to_string(dataWidth3 - 1) + ":0]");
+	}
+	else if (dataWidth3 > dataWidth1 && oper2 != "1") {	// Apparently, {4{1'b0},4444} is the same as {00004444}, so the idea is to do {dataWidth{1st_bit} , remaining}
+		oper2.insert(0, "{" + std::to_string(dataWidth3 - dataWidth1) + "{" + oper2 + "[" + std::to_string(dataWidth1 - 1) + "]},");
+		oper2.append("}");
+	}
+
+	// Outputting to verilog file
 	if (!(real1 || oper1 == "1") || !(real2 || type == "reg" || oper2 == "1") || !real3) return "error"; //error case 1-3
 	if (type == "+") {
 		if (oper2 == "1") out = "INC #(.DATAWIDTH(" + std::to_string(datawidth) + ")) incrementor" + std::to_string(num) + "(" + oper1 + "," + result + ");";
