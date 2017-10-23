@@ -147,7 +147,7 @@ std::string generateMux(std::string result, std::string oper1, std::string oper2
 		}
 	}
 	if (!real1 || !real2 || !real3) return "error"; //error case 1-3
-	if (sign1 || sign2) return "SMUX2x1 mux" + std::to_string(num) + "(" + oper1 + "," + oper2 + "," + oper3 + "," + result + ");";
+	if (sign1 || sign2) return "SMUX2x1 #(.DATAWIDTH(" + std::to_string(datawidth) + ")) mux" + std::to_string(num) + "(" + oper1 + "," + oper2 + "," + oper3 + "," + result + ");";
 	else return "MUX2x1 #(.DATAWIDTH(" + std::to_string(datawidth) + ")) mux" + std::to_string(num) + "(" + oper1 + "," + oper2 + "," + oper3 + "," + result + ");";
 }
 
