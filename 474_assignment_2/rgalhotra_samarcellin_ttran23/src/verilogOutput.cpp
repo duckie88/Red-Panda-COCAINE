@@ -7,7 +7,8 @@ void generateIO(std::vector<node> list, char* outFileStr) {
 	// Variables for file, appending
 	std::ofstream myFile;
 	myFile.open(outFileStr, std::ios::app);
-
+	myFile << std::endl;
+	std::cout << std::endl;
 	// Looping through
 	for (int i = 0; i < list.size(); i++) {
 	//list[i].getName() << list[i].getType() << list[i].getSIGN() << list[i].getDataSize() 
@@ -37,8 +38,8 @@ void generateIO(std::vector<node> list, char* outFileStr) {
 	}
 
 	// End and close
-	myFile << std::endl << std::endl;
-	std::cout << std::endl << std::endl;
+	myFile << std::endl;
+	std::cout << std::endl;
 	myFile.close();
 }
 
@@ -219,7 +220,7 @@ void generateVerilogFile(std::vector<node> ioList, std::vector<std::string> modu
 	}
 
 	// Footer
-	outFS << "endmodule" << std::endl;
-	std::cout << "endmodule" << std::endl;
+	outFS << std::endl << "endmodule" << std::endl;
+	std::cout << std::endl << "endmodule" << std::endl;
 	outFS.close();
 }

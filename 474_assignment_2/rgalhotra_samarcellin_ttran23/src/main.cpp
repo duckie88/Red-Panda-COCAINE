@@ -108,10 +108,10 @@ int main(int argc, char* argv[]) {
 	}
 
 	//test print of list
-	for (i = 0; i < list.size(); i++) {
-		std::cout << list[i].getName() << '\t' << list[i].getType() << '\t' << list[i].getSIGN() << '\t' << list[i].getDataSize() << std::endl;
-	}
-	std::cout << "\n\n\n";
+	//for (i = 0; i < list.size(); i++) {
+	//	std::cout << list[i].getName() << '\t' << list[i].getType() << '\t' << list[i].getSIGN() << '\t' << list[i].getDataSize() << std::endl;
+	//}
+	//std::cout << "\n\n\n";
 	generateVerilogFile(list, list2, argv[1], argv[2]);
 
 	return 0;
