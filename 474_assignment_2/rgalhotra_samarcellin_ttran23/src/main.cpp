@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <iterator>
+#include <algorithm>
 
 #include "node.h"
 #include "verilogOutput.h"
@@ -22,7 +23,7 @@ int main(int argc, char* argv[]) {
 	std::string type;
 	int i, j, size, num = 0;
 	char name;
-	bool SIGN;
+	bool SIGN = false;
 	bool clkrst = false;
 
 	if (argc != 3) {  //check for correct input
@@ -47,10 +48,10 @@ int main(int argc, char* argv[]) {
 																															   //parse data for node
 				temp = results[1];
 				if (temp[0] == 'U') {
-					SIGN = false; //unsigned 
+					SIGN = 0; //unsigned 
 				}
 				else {
-					SIGN = true; //signed
+					SIGN = 1; //signed
 				}
 				j = 0;
 				for (i = 0; i < temp.size(); ++i) { //get dataSize by removing letters from Int32, etc.
@@ -66,9 +67,7 @@ int main(int argc, char* argv[]) {
 				std::istringstream(temp) >> size;
 				for (i = 2; i < results.size(); i++) { //create a node for each variable with these stats
 					temp = results[i]; //get rid of commas
-					if(temp[1] == ','){			
-						temp[1] = NULL;
-					}
+					temp.erase(std::remove(temp.begin(), temp.end(), ','), temp.end());
 					results[i] = temp;
 					list.push_back(node(results[0],results[i],SIGN,size));
 				}
@@ -81,11 +80,11 @@ int main(int argc, char* argv[]) {
 					oper1 = results[2];
 					type = "reg";
 					std::cout << type << std::endl;
-					list2.push_back(generateModule(result, oper1, "isReg", type, num, list));
+					list2.push_back(generateModule(result, oper1, "help", type, num, list));
 					num++;
 					if (!clkrst) {
-						list.push_back(node("input", "Clk", false, 1));
-						list.push_back(node("input", "Rst", false, 1));
+						list.push_back(node("input", "Clk", true, 1));
+						list.push_back(node("input", "Rst", true, 1));
 						clkrst = true;
 					}
 				}
