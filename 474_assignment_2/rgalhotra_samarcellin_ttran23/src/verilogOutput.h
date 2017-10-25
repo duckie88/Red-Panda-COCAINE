@@ -6,7 +6,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
-#include "node.h"
+#include "nodes.h"
 
 // Call it as: generateVerilogFile(argv[2]);
 void generateVerilogFile(std::vector<node> ioList, std::vector<std::string> moduleList, char* inFileStr, char* outFileStr);
