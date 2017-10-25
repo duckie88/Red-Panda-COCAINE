@@ -1,0 +1,24 @@
+module circuit1( a, b, c, z, x, Clk, Rst );
+
+input signed [7:0] a;
+input signed [7:0] b;
+input signed [7:0] c;
+output signed [7:0] z;
+output signed [15:0] x;
+wire signed [7:0] d;
+wire signed [7:0] e;
+wire signed [15:0] f;
+wire signed [15:0] g;
+wire signed [15:0] xwire;
+input signed Clk;
+input signed Rst;
+
+SADD #(.DATAWIDTH(8)) adder0(a,b,d);
+SADD #(.DATAWIDTH(8)) adder1(a,c,e);
+SCOMP #(.DATAWIDTH(8)) comparator2({8{d[7]},d},{8{e[7]},e},g, , );
+MUX2x1 #(.DATAWIDTH(8)) mux3(g,d,e,z);
+SMUL #(.DATAWIDTH(16)) multiplier4({8{a[7]},a},{8{c[7]},c},f);
+SSUB #(.DATAWIDTH(16)) subber5(f,d,xwire);
+REG #(.DATAWIDTH(16)) register6(Clk,Rst,xwire,x);
+
+endmodule

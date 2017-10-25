@@ -8,7 +8,7 @@ void generateIO(std::vector<node> list, char* outFileStr) {
 	std::ofstream myFile;
 	myFile.open(outFileStr, std::ios::app);
 	myFile << std::endl;
-	std::cout << std::endl;
+	//std::cout << std::endl;
 	// Looping through
 	for (int i = 0; i < list.size(); i++) {
 	//list[i].getName() << list[i].getType() << list[i].getSIGN() << list[i].getDataSize() 
@@ -21,7 +21,7 @@ void generateIO(std::vector<node> list, char* outFileStr) {
 				ss << list.at(i).getType() << " signed [" << list.at(i).getDataSize() - 1 << ":0] " << list.at(i).getName() << ';' << std::endl;
 			}
 			ioTemp = ss.str();
-			std::cout << ioTemp;
+			//std::cout << ioTemp;
 			myFile << ioTemp;
 		}
 		else {
@@ -32,14 +32,14 @@ void generateIO(std::vector<node> list, char* outFileStr) {
 				ss << list.at(i).getType() << " [" << list.at(i).getDataSize() - 1 << ":0] " << list.at(i).getName() << ';' << std::endl;
 			}
 			ioTemp = ss.str();
-			std::cout << ioTemp;
+			//std::cout << ioTemp;
 			myFile << ioTemp;
 		}
 	}
 
 	// End and close
 	myFile << std::endl;
-	std::cout << std::endl;
+	//std::cout << std::endl;
 	myFile.close();
 }
 
@@ -194,7 +194,7 @@ void generateVerilogFile(std::vector<node> ioList, std::vector<std::string> modu
 
 	// Header
 	outFS << "module " << moduleName << "( ";
-	std::cout << "module " << moduleName << "( ";
+	//std::cout << "module " << moduleName << "( ";
 
 	// Putting all input/output variables into a secondary vector
 	for (int i = 0; i < ioList.size(); i++) {
@@ -206,12 +206,12 @@ void generateVerilogFile(std::vector<node> ioList, std::vector<std::string> modu
 	// Traverses secondary vector and just puts the names
 	for (int i = 0; i < ioHeaderList.size()-1; i++) {
 		outFS << ioHeaderList.at(i).getName() << ", ";
-		std::cout << ioHeaderList.at(i).getName() << ", ";
+		//std::cout << ioHeaderList.at(i).getName() << ", ";
 	}
 
 	// Does the last variable because all other variables end with ',' while last one ends with ');'
 	outFS << ioHeaderList.at(ioHeaderList.size() - 1).getName() << " );\n";
-	std::cout << ioHeaderList.at(ioHeaderList.size() - 1).getName() << " );\n";
+	//std::cout << ioHeaderList.at(ioHeaderList.size() - 1).getName() << " );\n";
 	outFS.close();
 
 	// Generates the list of Input and Outputs
@@ -221,11 +221,11 @@ void generateVerilogFile(std::vector<node> ioList, std::vector<std::string> modu
 	outFS.open(outFileStr, std::ios::app);
 	for (int i = 0; i < moduleList.size(); i++) {
 		outFS << moduleList.at(i) << std::endl;
-		std::cout << moduleList.at(i) << std::endl;
+		//std::cout << moduleList.at(i) << std::endl;
 	}
 
 	// Footer
 	outFS << std::endl << "endmodule" << std::endl;
-	std::cout << std::endl << "endmodule" << std::endl;
+	//std::cout << std::endl << "endmodule" << std::endl;
 	outFS.close();
 }

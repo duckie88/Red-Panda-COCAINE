@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\Stephanie\Documents\School\ECE 574a\Red-Panda-COCAINE\474_assignment_2\rgalhotra_samarcellin_ttran23_build\CMakeFiles\c5831b549c6a32c2c4dbc4a5d4755b86\generate.stamp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{6511B8E7-8E4E-3F3D-B807-A62F6F5FBA31}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

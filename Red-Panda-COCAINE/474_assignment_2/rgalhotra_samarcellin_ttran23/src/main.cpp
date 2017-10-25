@@ -26,6 +26,7 @@ int main(int argc, char* argv[]) {
 	int critTemp, x = 0;
 	int i, j, size, num = 0;
 	char name;
+	float max = 0;
 	bool SIGN = false;
 	bool clkrst = false;
 	
@@ -86,7 +87,7 @@ int main(int argc, char* argv[]) {
 					temp.erase(std::remove(temp.begin(), temp.end(), ','), temp.end());
 					results[i] = temp;
 					list.push_back(node(results[0],results[i],SIGN,size));
-					if(results[0] == "input"){ //if it's an input, also save for crit path
+					if(results[0] == "input"){ //if it's an input, also save for crit path with delay 0
 						crit.push_back(path(results[i],0));
 					}
 				}
@@ -109,13 +110,12 @@ int main(int argc, char* argv[]) {
 					for(i = 0; i < crit.size(); i++){
 						if(results[2] == crit.at(i).getName()){
 							for(j = 0; j < list.size(); j++){
-								if(crit.at(i).getName() == list.at(i).getName()){
-									critTemp = list.at(i).getDataSize();
+								if(results[0] == list.at(j).getName()){
+									critTemp = list.at(j).getDataSize();
+									x = log(critTemp)/log(2); //get index of delay array
+									crit.push_back(path(results[0],crit.at(i).getDelayLength() + RegDelays[x]));
 								}
 							}
-							x = log(critTemp)/log(2);
-							crit.at(i).addDelay(RegDelays[x]);
-							crit.at(i).setName(results[0]);
 						}
 					}
 				}
@@ -132,15 +132,15 @@ int main(int argc, char* argv[]) {
 					for(i = 0; i < crit.size(); i++){
 						if((results[2] == crit.at(i).getName()) || (results[4] == crit.at(i).getName()) || (results[6] == crit.at(i).getName())){
 							for(j = 0; j < list.size(); j++){
-								if(crit.at(i).getName() == list.at(i).getName()){
-									critTemp = list.at(i).getDataSize();
+								if(results[0] == list.at(j).getName()){
+									critTemp = list.at(j).getDataSize();
+									x = log(critTemp)/log(2); //get index of delay array
+									crit.push_back(path(results[0],crit.at(i).getDelayLength() + RegDelays[x]));
 								}
 							}
-							x = log(critTemp)/log(2);
-							crit.at(i).addDelay(MuxDelays[x]);
-							crit.at(i).setName(results[0]);
 						}
 					}
+
 				}
 				else { //rest
 					result = results[0];
@@ -154,48 +154,46 @@ int main(int argc, char* argv[]) {
 					for(i = 0; i < crit.size(); i++){
 						if((results[2] == crit.at(i).getName()) || (results[4] == crit.at(i).getName())){
 							for(j = 0; j < list.size(); j++){
-								if(crit.at(i).getName() == list.at(i).getName()){
-									critTemp = list.at(i).getDataSize();
+								if(results[0] == list.at(j).getName()){
+									critTemp = list.at(j).getDataSize();
 								}
 							}
 							x = log(critTemp)/log(2);
 
 							if(results[3] == "+"){
 								if(results[4] != "1"){
-									crit.at(i).addDelay(AddDelays[x]);
+									crit.push_back(path(results[0],crit.at(i).getDelayLength() + AddDelays[x]));
 								}
 								else{
-									crit.at(i).addDelay(IncDelays[x]);
+									crit.push_back(path(results[0],crit.at(i).getDelayLength() + IncDelays[x]));
 								}
 							}
 							else if(results[3] == "-"){
 								if(results[4] != "1"){
-									crit.at(i).addDelay(SubDelays[x]);
+									crit.push_back(path(results[0],crit.at(i).getDelayLength() + SubDelays[x]));
 								}
 								else{
-									crit.at(i).addDelay(DecDelays[x]);
+									crit.push_back(path(results[0],crit.at(i).getDelayLength() + DecDelays[x]));
 								}
 							}
 							else if(results[3] == "*"){
-								crit.at(i).addDelay(MulDelays[x]);
+								crit.push_back(path(results[0],crit.at(i).getDelayLength() + MulDelays[x]));
 							}
 							else if((results[3] == "<")  || (results[3] == ">") || (results[3] == "==")){
-								crit.at(i).addDelay(CompDelays[x]);
+								crit.push_back(path(results[0],crit.at(i).getDelayLength() + CompDelays[x]));
 							}
 							else if(results[3] == ">>"){
-								crit.at(i).addDelay(SHRDelays[x]);
+								crit.push_back(path(results[0],crit.at(i).getDelayLength() + SHRDelays[x]));
 							}
 							else if(results[3] == "<<"){
-								crit.at(i).addDelay(SHLDelays[x]);
+								crit.push_back(path(results[0],crit.at(i).getDelayLength() + SHLDelays[x]));
 							}
 							else if(results[3] == "/"){
-								crit.at(i).addDelay(DivDelays[x]);
+								crit.push_back(path(results[0],crit.at(i).getDelayLength() + DivDelays[x]));
 							}
 							else if(results[3] == "%"){
-								crit.at(i).addDelay(ModDelays[x]);
+								crit.push_back(path(results[0],crit.at(i).getDelayLength() + ModDelays[x]));
 							}
-							
-							crit.at(i).setName(results[0]);
 						}
 					}
 				}
@@ -205,12 +203,19 @@ int main(int argc, char* argv[]) {
 
 	generateVerilogFile(list, list2, argv[1], argv[2]);
 
+	for(i = 0; i < crit.size(); i++){
+		if(crit.at(i).getDelayLength() > max){
+			max = crit.at(i).getDelayLength();
+		}
+	}
 
 	//test print of crit
 			for (i = 0; i < crit.size(); i++) {
 				std::cout << crit[i].getName() << '\t' << crit[i].getDelayLength() << std::endl;
 			}
 			std::cout << "\n\n\n";
+
+	std::cout << "Critical Path Delay : " << max << "ns" << std::endl;	
 
 	return 0;
 }
