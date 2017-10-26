@@ -84,7 +84,7 @@ std::string generateModule(std::string result, std::string oper1, std::string op
 	}
 
 	// Appending/Unappending(?) bits
-	if (type != "<<" && type != "==" && type != ">>") {
+	if (type != "<<" && type != "==" && type != ">>" && type != ">" && type != "=" && type != "<" ) {
 		if (dataWidth3 < dataWidth1) {	// result is lower bits than input 1
 			oper1.append("[" + std::to_string(dataWidth3 - 1) + ":0]");
 		}
