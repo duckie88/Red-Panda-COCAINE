@@ -122,6 +122,9 @@ int main(int argc, char* argv[]) {
 								if(results[0] == list.at(j).getName()){
 									critTemp = list.at(j).getDataSize();
 									x = log(critTemp)/log(2); //get index of delay array
+									if(critTemp >= 8){ // no index for 4-bit
+										x = x - 1;
+									}
 									crit.push_back(path(results[0],crit.at(i).getDelayLength() + RegDelays[x]));
 								}
 							}
@@ -148,6 +151,9 @@ int main(int argc, char* argv[]) {
 								if(results[0] == list.at(j).getName()){
 									critTemp = list.at(j).getDataSize();
 									x = log(critTemp)/log(2); //get index of delay array
+									if(critTemp >= 8){// no index for 4-bit
+										x = x - 1;
+									}
 									crit.push_back(path(results[0],crit.at(i).getDelayLength() + RegDelays[x]));
 								}
 							}
@@ -180,6 +186,9 @@ int main(int argc, char* argv[]) {
 								break;
 							}
 							x = log(critTemp)/log(2);
+							if(critTemp >= 8){// no index for 4-bit
+								x = x - 1;
+							}
 
 							if(results[3] == "+"){
 								if(results[4] != "1"){
@@ -236,10 +245,10 @@ int main(int argc, char* argv[]) {
 	}
 
 	//test print of crit
-	//		for (i = 0; i < crit.size(); i++) {
-	//			std::cout << crit[i].getName() << '\t' << crit[i].getDelayLength() << std::endl;
-	//		}
-	//		std::cout << "\n\n\n";
+			//for (i = 0; i < crit.size(); i++) {
+			//	std::cout << crit[i].getName() << '\t' << crit[i].getDelayLength() << std::endl;
+			//}
+			//std::cout << "\n\n\n";
 
 	if(error == false){
 		std::cout << "Critical Path Delay : " << max << "ns" << std::endl;	
