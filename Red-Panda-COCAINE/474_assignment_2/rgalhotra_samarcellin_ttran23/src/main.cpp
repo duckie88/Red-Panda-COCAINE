@@ -23,7 +23,8 @@ int main(int argc, char* argv[]) {
 	std::string oper2;
 	std::string oper3;
 	std::string type;
-	int critTemp, x = 0;
+	int critTemp = -1;
+	int x = 0;
 	int i, j, size, num = 0;
 	char name;
 	float max = 0;
@@ -102,6 +103,10 @@ int main(int argc, char* argv[]) {
 					result = results[0];
 					oper1 = results[2];
 					type = "reg";
+					if(generateModule(result, oper1, "help", type, num, list) == "error"){
+						error = true;
+						break;
+					}
 					list2.push_back(generateModule(result, oper1, "help", type, num, list));
 					num++;
 					if (!clkrst) { //add clk and rst if not already in module to account for register
@@ -129,6 +134,10 @@ int main(int argc, char* argv[]) {
 					oper2 = results[4];
 					oper3 = results[6];
 					type = results[3];
+					if(generateMux(result, oper1, oper2, oper3, num, list) == "error"){
+						error = true;
+						break;
+					}
 					list2.push_back(generateMux(result, oper1, oper2, oper3, num, list));
 					num++;
 
@@ -151,6 +160,10 @@ int main(int argc, char* argv[]) {
 					oper1 = results[2];
 					oper2 = results[4];
 					type = results[3];
+					if(generateModule(result, oper1, oper2, type, num, list) == "error"){
+						error = true;
+						break;
+					}
 					list2.push_back(generateModule(result, oper1, oper2, type, num, list));
 					num++;
 
@@ -160,15 +173,13 @@ int main(int argc, char* argv[]) {
 							for(j = 0; j < list.size(); j++){
 								if(results[0] == list.at(j).getName()){
 									critTemp = list.at(j).getDataSize();
-									error = false;
-								}
-								else{
-									error = true;
 								}
 							}
-							if(error == false){
-								x = log(critTemp)/log(2);
+							if(critTemp == -1){
+								error = true;
+								break;
 							}
+							x = log(critTemp)/log(2);
 
 							if(results[3] == "+"){
 								if(results[4] != "1"){
@@ -214,7 +225,9 @@ int main(int argc, char* argv[]) {
 		}
 	}
 
-	generateVerilogFile(list, list2, argv[1], argv[2]);
+	if(error == false){
+		generateVerilogFile(list, list2, argv[1], argv[2]);
+	}
 
 	for(i = 0; i < crit.size(); i++){
 		if(crit.at(i).getDelayLength() > max){
@@ -228,7 +241,7 @@ int main(int argc, char* argv[]) {
 	//		}
 	//		std::cout << "\n\n\n";
 
-	if(error = false){
+	if(error == false){
 		std::cout << "Critical Path Delay : " << max << "ns" << std::endl;	
 	}
 	else{
