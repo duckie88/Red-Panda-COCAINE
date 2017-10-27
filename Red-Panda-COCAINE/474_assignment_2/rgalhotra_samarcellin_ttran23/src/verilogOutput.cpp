@@ -84,20 +84,32 @@ std::string generateModule(std::string result, std::string oper1, std::string op
 	}
 
 	// Appending/Unappending(?) bits
-	if (dataWidth3 < dataWidth1) {	// result is lower bits than input 1
-		oper1.append("[" + std::to_string(dataWidth3 - 1) + ":0]");
+	if (type != "<<" && type != "==" && type != ">>" && type != ">" && type != "=" && type != "<" ) {
+		if (dataWidth3 < dataWidth1) {	// result is lower bits than input 1
+			oper1.append("[" + std::to_string(dataWidth3 - 1) + ":0]");
+		}
+		else if (dataWidth3 > dataWidth1) {	// Apparently, {4{1'b0},4444} is the same as {00004444}, so the idea is to do {dataWidth{1st_bit} , remaining}
+			oper1.insert(0, "{" + std::to_string(dataWidth3 - dataWidth1) + "{" + oper1 + "[" + std::to_string(dataWidth1 - 1) + "]},");
+			oper1.append("}");
+		}
+
+		if (dataWidth3 < dataWidth2 && oper2 != "1") {	// result is lower bits than input 1
+			oper2 = oper2.append('[' + std::to_string(dataWidth3 - 1) + ":0]");
+		}
+		else if (dataWidth3 > dataWidth2 && oper2 != "1") {	// Apparently, {4{1'b0},4444} is the same as {00004444}, so the idea is to do {dataWidth{1st_bit} , remaining}
+			oper2.insert(0, "{" + std::to_string(dataWidth3 - dataWidth2) + "{" + oper2 + "[" + std::to_string(dataWidth2 - 1) + "]},");
+			oper2.append("}");
+		}
 	}
-	else if (dataWidth3 > dataWidth1) {	// Apparently, {4{1'b0},4444} is the same as {00004444}, so the idea is to do {dataWidth{1st_bit} , remaining}
-		oper1.insert(0, "{" + std::to_string(dataWidth3 - dataWidth1) + "{" + oper1 + "[" + std::to_string(dataWidth1-1) + "]},");
-		oper1.append("}");
-	}
-	
-	if (dataWidth3 < dataWidth2 && oper2 != "1") {	// result is lower bits than input 1
-		oper2 = oper2.append('[' + std::to_string(dataWidth3 - 1) + ":0]");
-	}
-	else if (dataWidth3 > dataWidth1 && oper2 != "1") {	// Apparently, {4{1'b0},4444} is the same as {00004444}, so the idea is to do {dataWidth{1st_bit} , remaining}
-		oper2.insert(0, "{" + std::to_string(dataWidth3 - dataWidth1) + "{" + oper2 + "[" + std::to_string(dataWidth1 - 1) + "]},");
-		oper2.append("}");
+	else {
+		if (dataWidth2 > dataWidth1) {	// Apparently, {4{1'b0},4444} is the same as {00004444}, so the idea is to do {dataWidth{1st_bit} , remaining}
+			oper1.insert(0, "{" + std::to_string(dataWidth2 - dataWidth1) + "{" + oper1 + "[" + std::to_string(dataWidth1 - 1) + "]},");
+			oper1.append("}");
+		}
+		else if (dataWidth1 > dataWidth2 && oper2 != "1") {	// Apparently, {4{1'b0},4444} is the same as {00004444}, so the idea is to do {dataWidth{1st_bit} , remaining}
+			oper2.insert(0, "{" + std::to_string(dataWidth1 - dataWidth2) + "{" + oper2 + "[" + std::to_string(dataWidth2 - 1) + "]},");
+			oper2.append("}");
+		}
 	}
 
 	// Outputting to verilog file

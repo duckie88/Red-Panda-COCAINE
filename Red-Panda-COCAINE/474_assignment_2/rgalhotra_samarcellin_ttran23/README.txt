@@ -5,4 +5,8 @@
 
 (USAGE: dpgen netlistFile verilogFile )
 
-Project reads in netlist files and creates a synthesizable verilog datapath implementation.
+Project reads in netlist files and creates a synthesizable verilog datapath implementation. Also calculates the estimated critical path and outputs it to console.
+
+Rohin: wrote instruction conversion from netlist to verilog
+Tam: wrote file output, verilog header and footer sections
+Stephanie: wrote file input and critical path caluclations
