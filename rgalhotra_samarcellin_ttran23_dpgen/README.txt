@@ -1,4 +1,4 @@
-# Author: Rohin Galhotra (574a), Stephanie Marcellin(574a), Tam Tran(474a)
+# Author: Rohin Galhotra (574a), Stephanie Marcellin (574a), Tam Tran (474a)
 # NetID: rgalhotra, samarcellin, ttran23
 # Date: October 2017
 # Assignment 2 : dpgen

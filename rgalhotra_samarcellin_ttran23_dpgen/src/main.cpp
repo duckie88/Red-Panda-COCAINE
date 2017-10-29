@@ -1,4 +1,3 @@
-#include <iostream>
 #include <sstream>
 #include <fstream>
 #include <string>
@@ -18,32 +17,33 @@ int main(int argc, char* argv[]) {
 	std::vector<node> list;
 	std::vector<std::string> list2;
 	std::vector<path> crit;
+	std::vector<std::string> results;
 	std::string result;
 	std::string oper1;
 	std::string oper2;
 	std::string oper3;
 	std::string type;
+	std::string word;
 	int critTemp = -1;
 	int x = 0;
 	int i, j, size, num = 0;
-	char name;
-	float max = 0;
+	double max = 0;
 	bool error = false;
 	bool SIGN = false;
 	bool clkrst = false;
 	
-	const float RegDelays[] = {2.616,2.644,2.879,3.061,3.602,3.966};
-	const float AddDelays[] = {2.704,3.713,4.924,5.638,7.270,9.566};
-	const float SubDelays[] = {3.024,3.412,4.890,5.569,7.253,9.566};
-	const float MulDelays[] = {2.438,3.651,7.453,7.811,12.395,15.354};
-	const float CompDelays[] = {3.031,3.934,5.949,6.256,7.264,8.416};
-	const float MuxDelays[] = {4.083,4.115,4.815,5.623,8.079,8.766};
-	const float SHRDelays[] = {3.644,4.007,5.178,6.460,8.819,11.095};
-	const float SHLDelays[] = {3.614,3.980,5.152,6.549,8.565,11.220};
-	const float DivDelays[] = {0.619,2.144,15.439,33.093,86.312,243.233};
-	const float ModDelays[] = {0.758,2.149,16.078,35.563,88.142,250.583};
-	const float IncDelays[] = {1.792,2.218,3.111,3.471,4.347,6.200};
-	const float DecDelays[] = {1.792,2.218,3.108,3.701,4.685,6.503};
+	const double RegDelays[] = {2.616,2.644,2.879,3.061,3.602,3.966};
+	const double AddDelays[] = {2.704,3.713,4.924,5.638,7.270,9.566};
+	const double SubDelays[] = {3.024,3.412,4.890,5.569,7.253,9.566};
+	const double MulDelays[] = {2.438,3.651,7.453,7.811,12.395,15.354};
+	const double CompDelays[] = {3.031,3.934,5.949,6.256,7.264,8.416};
+	const double MuxDelays[] = {4.083,4.115,4.815,5.623,8.079,8.766};
+	const double SHRDelays[] = {3.644,4.007,5.178,6.460,8.819,11.095};
+	const double SHLDelays[] = {3.614,3.980,5.152,6.549,8.565,11.220};
+	const double DivDelays[] = {0.619,2.144,15.439,33.093,86.312,243.233};
+	const double ModDelays[] = {0.758,2.149,16.078,35.563,88.142,250.583};
+	const double IncDelays[] = {1.792,2.218,3.111,3.471,4.347,6.200};
+	const double DecDelays[] = {1.792,2.218,3.108,3.701,4.685,6.503};
 
 	if (argc != 3) {  //check for correct input
 		std::cout << "\nUSAGE: dpgen netlistFile verilogFile\n\n";
@@ -60,12 +60,34 @@ int main(int argc, char* argv[]) {
 		if(error == true){
 			break;
 		}
+		line.clear();
 		getline(inFS, line);
 		inSS.clear();
 		inSS.str(line);
 		if (!line.empty()) { //if line isn't empty (we ignore empty lines)
-			std::istringstream iss(line);
-			std::vector<std::string> results((std::istream_iterator<std::string>(iss)), std::istream_iterator<std::string>());  //break it into words
+			//std::istringstream iss(line);
+			//std::vector<std::string> results((std::istream_iterator<std::string>(iss)), std::istream_iterator<std::string>());  //break it into words
+			results.clear();
+			word.clear();
+			for (i = 0; i < line.size(); i++) {
+				if (line[i] == ' ') {
+					results.push_back(word);
+					word.clear();
+				}
+				else {
+					word += line[i];
+				}
+			}
+			results.push_back(word);
+			word.clear();
+
+			//test print of results
+			//for (i = 0; i < results.size(); i++) {
+			//	std::cout << i << " " << results[i] << std::endl;
+			//}
+			//std::cout << "\n\n\n";
+
+			
 			if ((results[0] == "input") || (results[0] == "output") || (results[0] == "wire") || (results[0] == "register")) { //get data types and variable names of inputs and outputs
 																															   //parse data for node
 				temp = results[1];
@@ -154,7 +176,7 @@ int main(int argc, char* argv[]) {
 									if(critTemp >= 8){// no index for 4-bit
 										x = x - 1;
 									}
-									crit.push_back(path(results[0],crit.at(i).getDelayLength() + RegDelays[x]));
+									crit.push_back(path(results[0],crit.at(i).getDelayLength() + MuxDelays[x]));
 								}
 							}
 						}
