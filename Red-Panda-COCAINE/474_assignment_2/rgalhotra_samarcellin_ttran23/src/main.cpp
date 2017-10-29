@@ -25,7 +25,7 @@ int main(int argc, char* argv[]) {
 	std::string type;
 	int critTemp = -1;
 	int x = 0;
-	int i, j, size, num = 0;
+	unsigned int i, j, size, num = 0;
 	char name;
 	float max = 0;
 	bool error = false;

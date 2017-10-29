@@ -10,7 +10,7 @@ void generateIO(std::vector<node> list, char* outFileStr) {
 	myFile << std::endl;
 	//std::cout << std::endl;
 	// Looping through
-	for (int i = 0; i < list.size(); i++) {
+	for (unsigned int i = 0; i < list.size(); i++) {
 	//list[i].getName() << list[i].getType() << list[i].getSIGN() << list[i].getDataSize() 
 		ss = std::stringstream();
 		if (list.at(i).getSIGN() == true) {
@@ -48,7 +48,7 @@ std::string generateModule(std::string result, std::string oper1, std::string op
 	//if - or + check if oper2 is 1, then use inc or dec
 	//default case to check for error where it's not a real operator
 	std::string out;
-	int i = 0;
+	unsigned int i = 0;
 	bool real1 = false;
 	bool sign1 = false;
 	int dataWidth1 = 0;
@@ -158,7 +158,7 @@ std::string generateModule(std::string result, std::string oper1, std::string op
 }
 
 std::string generateMux(std::string result, std::string oper1, std::string oper2, std::string oper3, int num, std::vector<node>ioList) {
-	int i = 0;
+	unsigned int i = 0;
 	bool real1 = false;
 	bool sign1 = false;
 	bool real2 = false;
@@ -209,14 +209,14 @@ void generateVerilogFile(std::vector<node> ioList, std::vector<std::string> modu
 	//std::cout << "module " << moduleName << "( ";
 
 	// Putting all input/output variables into a secondary vector
-	for (int i = 0; i < ioList.size(); i++) {
+	for (unsigned int i = 0; i < ioList.size(); i++) {
 		if (ioList.at(i).getType().compare("input") == 0 || ioList.at(i).getType().compare("output") == 0) {
 			ioHeaderList.push_back(ioList.at(i));
 		}
 	}
 
 	// Traverses secondary vector and just puts the names
-	for (int i = 0; i < ioHeaderList.size()-1; i++) {
+	for (unsigned int i = 0; i < ioHeaderList.size()-1; i++) {
 		outFS << ioHeaderList.at(i).getName() << ", ";
 		//std::cout << ioHeaderList.at(i).getName() << ", ";
 	}
@@ -231,7 +231,7 @@ void generateVerilogFile(std::vector<node> ioList, std::vector<std::string> modu
 
 	// Generates the list of operations
 	outFS.open(outFileStr, std::ios::app);
-	for (int i = 0; i < moduleList.size(); i++) {
+	for (unsigned int i = 0; i < moduleList.size(); i++) {
 		outFS << moduleList.at(i) << std::endl;
 		//std::cout << moduleList.at(i) << std::endl;
 	}
