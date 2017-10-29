@@ -2,7 +2,7 @@
 
 void generateIO(std::vector<node> list, char* outFileStr) {
 	// Variables for string concatenation
-	std::stringstream ss;
+	
 	std::string ioTemp;
 	// Variables for file, appending
 	std::ofstream myFile;
@@ -12,7 +12,8 @@ void generateIO(std::vector<node> list, char* outFileStr) {
 	// Looping through
 	for (unsigned int i = 0; i < list.size(); i++) {
 	//list[i].getName() << list[i].getType() << list[i].getSIGN() << list[i].getDataSize() 
-		ss = std::stringstream();
+		//ss.clear();
+		std::stringstream ss;
 		if (list.at(i).getSIGN() == true) {
 			if (list.at(i).getDataSize() == 1) {
 				ss << list.at(i).getType() << " signed " << list.at(i).getName() << ';' << std::endl;
