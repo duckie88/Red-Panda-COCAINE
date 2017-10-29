@@ -26,7 +26,8 @@ int main(int argc, char* argv[]) {
 	std::string word;
 	int critTemp = -1;
 	int x = 0;
-	int i, j, size, num = 0;
+	unsigned int i, j, size, num = 0;
+	char name;
 	double max = 0;
 	bool error = false;
 	bool SIGN = false;
