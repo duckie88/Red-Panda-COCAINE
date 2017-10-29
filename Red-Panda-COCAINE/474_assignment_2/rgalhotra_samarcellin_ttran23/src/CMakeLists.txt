@@ -32,3 +32,5 @@ file( GLOB SRCS *.cpp *.h )
 # and header files needed for the executable.
 
 add_executable( dpgen ${SRCS} )
+
+set (CMAKE_CXX_STANDARD 11)

@@ -251,7 +251,7 @@ int main(int argc, char* argv[]) {
 			//std::cout << "\n\n\n";
 
 	if(error == false){
-		std::cout << "Critical Path Delay : " << max << "ns" << std::endl;	
+		std::cout << "Critical Path : " << max << " ns" << std::endl;	
 	}
 	else{
 		std::cout << "Error in input file" << std::endl;	

@@ -86,28 +86,28 @@ std::string generateModule(std::string result, std::string oper1, std::string op
 	// Appending/Unappending(?) bits
 	if (type != "<<" && type != "==" && type != ">>" && type != ">" && type != "=" && type != "<" ) {
 		if (dataWidth3 < dataWidth1) {	// result is lower bits than input 1
-			oper1.append("[" + std::to_string(dataWidth3 - 1) + ":0]");
+			oper1.append("[" + toString(dataWidth3 - 1) + ":0]");
 		}
 		else if (dataWidth3 > dataWidth1) {	// Apparently, {4{1'b0},4444} is the same as {00004444}, so the idea is to do {dataWidth{1st_bit} , remaining}
-			oper1.insert(0, "{" + std::to_string(dataWidth3 - dataWidth1) + "{" + oper1 + "[" + std::to_string(dataWidth1 - 1) + "]},");
+			oper1.insert(0, "{" + toString(dataWidth3 - dataWidth1) + "{" + oper1 + "[" + toString(dataWidth1 - 1) + "]},");
 			oper1.append("}");
 		}
 
 		if (dataWidth3 < dataWidth2 && oper2 != "1") {	// result is lower bits than input 1
-			oper2 = oper2.append('[' + std::to_string(dataWidth3 - 1) + ":0]");
+			oper2 = oper2.append('[' + toString(dataWidth3 - 1) + ":0]");
 		}
 		else if (dataWidth3 > dataWidth2 && oper2 != "1") {	// Apparently, {4{1'b0},4444} is the same as {00004444}, so the idea is to do {dataWidth{1st_bit} , remaining}
-			oper2.insert(0, "{" + std::to_string(dataWidth3 - dataWidth2) + "{" + oper2 + "[" + std::to_string(dataWidth2 - 1) + "]},");
+			oper2.insert(0, "{" + toString(dataWidth3 - dataWidth2) + "{" + oper2 + "[" + toString(dataWidth2 - 1) + "]},");
 			oper2.append("}");
 		}
 	}
 	else {
 		if (dataWidth2 > dataWidth1) {	// Apparently, {4{1'b0},4444} is the same as {00004444}, so the idea is to do {dataWidth{1st_bit} , remaining}
-			oper1.insert(0, "{" + std::to_string(dataWidth2 - dataWidth1) + "{" + oper1 + "[" + std::to_string(dataWidth1 - 1) + "]},");
+			oper1.insert(0, "{" + toString(dataWidth2 - dataWidth1) + "{" + oper1 + "[" + toString(dataWidth1 - 1) + "]},");
 			oper1.append("}");
 		}
 		else if (dataWidth1 > dataWidth2 && oper2 != "1") {	// Apparently, {4{1'b0},4444} is the same as {00004444}, so the idea is to do {dataWidth{1st_bit} , remaining}
-			oper2.insert(0, "{" + std::to_string(dataWidth1 - dataWidth2) + "{" + oper2 + "[" + std::to_string(dataWidth2 - 1) + "]},");
+			oper2.insert(0, "{" + toString(dataWidth1 - dataWidth2) + "{" + oper2 + "[" + toString(dataWidth2 - 1) + "]},");
 			oper2.append("}");
 		}
 	}
@@ -116,39 +116,39 @@ std::string generateModule(std::string result, std::string oper1, std::string op
 	if (!(real1 || oper1 == "1") || !(real2 || type == "reg" || oper2 == "1") || !real3) return "error"; //error case 1-3
 	
 	if (type == "+") {
-		if (oper2 == "1") out = "INC #(.DATAWIDTH(" + std::to_string(datawidth) + ")) incrementor" + std::to_string(num) + "(" + oper1 + "," + result + ");";
-		else out = "ADD #(.DATAWIDTH(" + std::to_string(datawidth) + ")) adder" + std::to_string(num) + "(" + oper1 + "," + oper2 + "," + result + ");";
+		if (oper2 == "1") out = "INC #(.DATAWIDTH(" + toString(datawidth) + ")) incrementor" + toString(num) + "(" + oper1 + "," + result + ");";
+		else out = "ADD #(.DATAWIDTH(" + toString(datawidth) + ")) adder" + toString(num) + "(" + oper1 + "," + oper2 + "," + result + ");";
 	}
 	else if (type == "-") {
-		if (oper2 == "1") out = "DEC #(.DATAWIDTH(" + std::to_string(datawidth) + ")) decrementor" + std::to_string(num) + "(" + oper1 + "," + result + ");";
-		else out = "SUB #(.DATAWIDTH(" + std::to_string(datawidth) + ")) subber" + std::to_string(num) + "(" + oper1 + "," + oper2 + "," + result + ");";
+		if (oper2 == "1") out = "DEC #(.DATAWIDTH(" + toString(datawidth) + ")) decrementor" + toString(num) + "(" + oper1 + "," + result + ");";
+		else out = "SUB #(.DATAWIDTH(" + toString(datawidth) + ")) subber" + toString(num) + "(" + oper1 + "," + oper2 + "," + result + ");";
 	}
 	else if (type == "reg") {
-		out = "REG #(.DATAWIDTH(" + std::to_string(datawidth) + ")) register" + std::to_string(num) + "(Clk,Rst" + "," + oper1 + "," + result + ");";
+		out = "REG #(.DATAWIDTH(" + toString(datawidth) + ")) register" + toString(num) + "(Clk,Rst" + "," + oper1 + "," + result + ");";
 	}
 	else if (type == "*") {
-		out = "MUL #(.DATAWIDTH(" + std::to_string(datawidth) + ")) multiplier" + std::to_string(num) + "(" + oper1 + "," + oper2 + "," + result + ");";
+		out = "MUL #(.DATAWIDTH(" + toString(datawidth) + ")) multiplier" + toString(num) + "(" + oper1 + "," + oper2 + "," + result + ");";
 	}
 	else if (type == "==") {
-		out = "COMP #(.DATAWIDTH(" + std::to_string(indata) + ")) comparator" + std::to_string(num) + "(" + oper1 + "," + oper2 + ", , ," + result + ");";
+		out = "COMP #(.DATAWIDTH(" + toString(indata) + ")) comparator" + toString(num) + "(" + oper1 + "," + oper2 + ", , ," + result + ");";
 	}
 	else if (type == ">") {
-		out = "COMP #(.DATAWIDTH(" + std::to_string(indata) + ")) comparator" + std::to_string(num) + "(" + oper1 + "," + oper2 + "," + result + ", , );";
+		out = "COMP #(.DATAWIDTH(" + toString(indata) + ")) comparator" + toString(num) + "(" + oper1 + "," + oper2 + "," + result + ", , );";
 	}
 	else if (type == "<") {
-		out = "COMP #(.DATAWIDTH(" + std::to_string(indata) + ")) comparator" + std::to_string(num) + "(" + oper1 + "," + oper2 + ", ," + result + ", );";
+		out = "COMP #(.DATAWIDTH(" + toString(indata) + ")) comparator" + toString(num) + "(" + oper1 + "," + oper2 + ", ," + result + ", );";
 	}
 	else if (type == "<<") {
-		out = "SHL #(.DATAWIDTH(" + std::to_string(datawidth) + ")) shiftleft" + std::to_string(num) + "(" + oper2 + "," + oper1 + "," + result + ");";
+		out = "SHL #(.DATAWIDTH(" + toString(datawidth) + ")) shiftleft" + toString(num) + "(" + oper2 + "," + oper1 + "," + result + ");";
 	}
 	else if (type == ">>") {
-		out = "SHR #(.DATAWIDTH(" + std::to_string(datawidth) + ")) shiftright" + std::to_string(num) + "(" + oper2 + "," + oper1 + "," + result + ");";
+		out = "SHR #(.DATAWIDTH(" + toString(datawidth) + ")) shiftright" + toString(num) + "(" + oper2 + "," + oper1 + "," + result + ");";
 	}
 	else if (type == "/") {
-		out = "DIV #(.DATAWIDTH(" + std::to_string(datawidth) + ")) divider" + std::to_string(num) + "(" + oper1 + "," + oper2 + "," + result + ");";
+		out = "DIV #(.DATAWIDTH(" + toString(datawidth) + ")) divider" + toString(num) + "(" + oper1 + "," + oper2 + "," + result + ");";
 	}
 	else if (type == "%") {
-		out = "MOD #(.DATAWIDTH(" + std::to_string(datawidth) + ")) modulus" + std::to_string(num) + "(" + oper1 + "," + oper2 + "," + result + ");";
+		out = "MOD #(.DATAWIDTH(" + toString(datawidth) + ")) modulus" + toString(num) + "(" + oper1 + "," + oper2 + "," + result + ");";
 	}
 	else {
 		return "error"; //error case 4
@@ -185,7 +185,7 @@ std::string generateMux(std::string result, std::string oper1, std::string oper2
 	}
 	if (!real1 || !real2 || !real3) return "error"; //error case 1-3
 
-	return "MUX2x1 #(.DATAWIDTH(" + std::to_string(datawidth) + ")) mux" + std::to_string(num) + "(" + oper1 + "," + oper2 + "," + oper3 + "," + result + ");";
+	return "MUX2x1 #(.DATAWIDTH(" + toString(datawidth) + ")) mux" + toString(num) + "(" + oper1 + "," + oper2 + "," + oper3 + "," + result + ");";
 }
 
 void generateVerilogFile(std::vector<node> ioList, std::vector<std::string> moduleList, char* inFileStr, char* outFileStr) {
@@ -240,4 +240,16 @@ void generateVerilogFile(std::vector<node> ioList, std::vector<std::string> modu
 	outFS << std::endl << "endmodule" << std::endl;
 	//std::cout << std::endl << "endmodule" << std::endl;
 	outFS.close();
+}
+
+std::string toString(int n) {
+	std::ostringstream stm;
+	stm << n;
+	return stm.str();
+}
+
+std::string toString(double n) {
+	std::ostringstream stm;
+	stm << n;
+	return stm.str();
 }
