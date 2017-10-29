@@ -1,4 +1,4 @@
-# Author: Rohin Galhotra, Stephanie Marcellin, Tam Tran
+# Author: Rohin Galhotra (574a), Stephanie Marcellin(574a), Tam Tran(474a)
 # NetID: rgalhotra, samarcellin, ttran23
 # Date: October 2017
 # Assignment 2 : dpgen
@@ -9,4 +9,4 @@ Project reads in netlist files and creates a synthesizable verilog datapath impl
 
 Rohin: wrote instruction conversion from netlist to verilog
 Tam: wrote file output, verilog header and footer sections
-Stephanie: wrote file input and critical path caluclations
+Stephanie: wrote file input and critical path calculations
