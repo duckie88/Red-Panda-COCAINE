@@ -196,7 +196,7 @@ void generateVerilogFile(std::vector<node> ioList, std::vector<std::string> modu
 	std::vector<node> ioHeaderList;	// For having a smaller list of input/output for just the header module(___); part. Needed because main ioList will also include wire/regs
 	
 	// https://stackoverflow.com/questions/8520560/get-a-file-name-from-a-path
-	moduleName = moduleName.substr(moduleName.find_last_of("/\\_") + 1); // finds last occurance of a /, \, or _ (for trimming path)
+	moduleName = moduleName.substr(moduleName.find_last_of("/\\") + 1); // finds last occurance of a /, \, or _ (for trimming path)
 	moduleName = moduleName.substr(0, moduleName.find_last_of(".")); // takes substring up to last occurance of . (for trimming extensions)
 
 	outFS.open(outFileStr);//open output file
