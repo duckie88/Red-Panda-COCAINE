@@ -57,8 +57,8 @@ std::string generateModule(std::string result, std::string oper1, std::string op
 	bool sign2 = false;
 	int dataWidth2 = 0;
 	bool real3 = false;
-	int dataWidth3 = 0;
 	bool sign3 = false;
+	int dataWidth3 = 0;
 	int datawidth = 0;
 	int indata = 0;
 
@@ -154,6 +154,7 @@ std::string generateModule(std::string result, std::string oper1, std::string op
 	else {
 		return "error"; //error case 4
 	}
+	if (sign3); //remove warning?
 	if ((sign1 || sign2) && !(type == "reg" || type == "<<" || type == ">>")) return "S" + out;
 	else return out;
 }
@@ -164,8 +165,8 @@ std::string generateMux(std::string result, std::string oper1, std::string oper2
 	bool sign1 = false;
 	bool real2 = false;
 	bool sign2 = false;
-	bool sign3 = false;
 	bool real3 = false;
+	bool sign3 = false;
 	int datawidth = 0;
 
 	//checking all variables were declared
@@ -184,8 +185,8 @@ std::string generateMux(std::string result, std::string oper1, std::string oper2
 			if (ioList.at(i).getDataSize() > datawidth) datawidth = ioList.at(i).getDataSize();
 		}
 	}
+	if (sign1 || sign2 || sign3); //Remove warnings. Don't even think sign is used in mux other than to assign it a value
 	if (!real1 || !real2 || !real3) return "error"; //error case 1-3
-
 	return "MUX2x1 #(.DATAWIDTH(" + toString(datawidth) + ")) mux" + toString(num) + "(" + oper1 + "," + oper2 + "," + oper3 + "," + result + ");";
 }
 
