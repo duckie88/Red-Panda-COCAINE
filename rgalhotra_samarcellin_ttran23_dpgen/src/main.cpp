@@ -105,7 +105,7 @@ int main(int argc, char* argv[]) {
 					}
 				}
 				while (j < temp.size()) {
-					temp[j] = NULL;
+					temp[j] = '\0';
 					j++;
 				}
 				std::istringstream(temp) >> size;
