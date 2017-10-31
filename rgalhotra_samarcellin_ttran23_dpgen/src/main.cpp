@@ -113,7 +113,8 @@ int main(int argc, char* argv[]) {
 					temp = results[i]; //get rid of commas
 					temp.erase(std::remove(temp.begin(), temp.end(), ','), temp.end());
 					results[i] = temp;
-					list.push_back(node(results[0],results[i],SIGN,size));
+					if(!(results[i] == " ") && !(results[i] == ""))
+						list.push_back(node(results[0],results[i],SIGN,size));
 					if(results[0] == "input"){ //if it's an input, also save for crit path with delay 0
 						crit.push_back(path(results[i],0));
 					}
