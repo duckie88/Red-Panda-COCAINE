@@ -90,7 +90,7 @@ std::string generateModule(std::string result, std::string oper1, std::string op
 			oper1.append("[" + toString(dataWidth3 - 1) + ":0]");
 		}
 		else if (dataWidth3 > dataWidth1) {	// Apparently, {4{1'b0},4444} is the same as {00004444}, so the idea is to do {dataWidth{1st_bit} , remaining}
-			oper1.insert(0, "{" + toString(dataWidth3 - dataWidth1) + "{" + oper1 + "[" + toString(dataWidth1 - 1) + "]},");
+			oper1.insert(0, "{{" + toString(dataWidth3 - dataWidth1) + "{" + oper1 + "[" + toString(dataWidth1 - 1) + "]}},");
 			oper1.append("}");
 		}
 
@@ -98,17 +98,17 @@ std::string generateModule(std::string result, std::string oper1, std::string op
 			oper2 = oper2.append('[' + toString(dataWidth3 - 1) + ":0]");
 		}
 		else if (dataWidth3 > dataWidth2 && oper2 != "1") {	// Apparently, {4{1'b0},4444} is the same as {00004444}, so the idea is to do {dataWidth{1st_bit} , remaining}
-			oper2.insert(0, "{" + toString(dataWidth3 - dataWidth2) + "{" + oper2 + "[" + toString(dataWidth2 - 1) + "]},");
+			oper2.insert(0, "{{" + toString(dataWidth3 - dataWidth2) + "{" + oper2 + "[" + toString(dataWidth2 - 1) + "]}},");
 			oper2.append("}");
 		}
 	}
 	else {
 		if (dataWidth2 > dataWidth1) {	// Apparently, {4{1'b0},4444} is the same as {00004444}, so the idea is to do {dataWidth{1st_bit} , remaining}
-			oper1.insert(0, "{" + toString(dataWidth2 - dataWidth1) + "{" + oper1 + "[" + toString(dataWidth1 - 1) + "]},");
+			oper1.insert(0, "{{" + toString(dataWidth2 - dataWidth1) + "{" + oper1 + "[" + toString(dataWidth1 - 1) + "]}},");
 			oper1.append("}");
 		}
 		else if (dataWidth1 > dataWidth2 && oper2 != "1") {	// Apparently, {4{1'b0},4444} is the same as {00004444}, so the idea is to do {dataWidth{1st_bit} , remaining}
-			oper2.insert(0, "{" + toString(dataWidth1 - dataWidth2) + "{" + oper2 + "[" + toString(dataWidth2 - 1) + "]},");
+			oper2.insert(0, "{{" + toString(dataWidth1 - dataWidth2) + "{" + oper2 + "[" + toString(dataWidth2 - 1) + "]}},");
 			oper2.append("}");
 		}
 	}
